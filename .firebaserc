@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "bigc-line-gamification-stg": "bigc-line",
+    "bigc-line-gamification-prod": "bigc-line"
+  },
+  "targets": {
+    "bigc-line": {
+      "hosting": {
+        "bigc-line-gamification-stg": [
+          "bigc-dmkt-gamification"
+        ],
+        "bigc-line-gamification-prod": [
+          "bigc-dmkt-gamification"
+        ]
+      }
+    }
+  }
+}

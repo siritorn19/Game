@@ -1,0 +1,19 @@
+.app {
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .qr-reader-container {
+    position: fixed;
+    width: 100%; /* Adjust the width as needed */
+    height: 100%; /* Adjust the height as needed */
+  }
+  
+  /* Media query for mobile devices */
+  @media (max-width: 768px) {
+    .qr-reader-container {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  
