@@ -24,6 +24,7 @@ const Home = () => {
       window.location.href = missionUrl;
     }
   };
+
   return (
     <Grid>
       <Grid item xs={12} sx={{ mb: 2, mt: 2  }}>

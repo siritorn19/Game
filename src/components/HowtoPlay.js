@@ -12,8 +12,8 @@ function HowtoPlay() {
       alignItems="start"
       textAlign="center"
       sx={{
-        mt: 10,
-        ml: 0.3,
+        mt: 6,
+        ml: 0.5,
         mr: 1,
       }}
     >
@@ -29,23 +29,24 @@ function HowtoPlay() {
       >
         วิธีเล่น
       </Button>
-
-      <Grid
-        container
-        spacing={1}
-        sx={{ borderRadius: 5, p: 2, backgroundColor: "grey.200",  }}
-      >
-        <Grid item xs={4}>
-          <Link to="/scanqr">
+      <Link to="/scanqr" style={{ textDecoration: "none",  color: "#000" }}>
+        <Grid
+          container
+          spacing={1}
+          sx={{ borderRadius: 5, p: 2, backgroundColor: "grey.200" }}
+        >
+          <Grid item xs={4}>
+            {/* <Link to="/scanqr"> */}
             <CameraAltIcon sx={{ fontSize: 50, color: "#000" }} />
-          </Link>
+            {/* </Link> */}
+          </Grid>
+          <Grid item xs={8}>
+            <Typography sx={{ fontFamily: "Prompt" }}>
+              กดกล้องเพื่อสแกน QR Code ตามจุดที่กำหนด
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid item xs={8}>
-          <Typography sx={{ textDecoration: "none", fontFamily: "Prompt" }}>
-            กดกล้องเพื่อสแกน QR Code ตามจุดที่กำหนด
-          </Typography>
-        </Grid>
-      </Grid>
+      </Link>
     </Grid>
   );
 }

@@ -10,10 +10,10 @@ const PopupAward = ({ message, error }) => {
     setOpen(false);
   };
 
-  
+
   return (
     <div>
-    {error === null ? null : (
+    {error && (
       <Dialog
         align="center"
         open={open}

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, Typography, Box } from "@mui/material";
+import { Grid, Typography, Box, IconButton, Link } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import queryString from "query-string";
+import { useHistory } from "react-router-dom";
 import HowtoPlay from "../components/HowtoPlay";
 import PopupQRReuse from "../components/AlertqrReuse";
 import Hunt01 from "../imges/hyp/Biggy-Treasure-Hunt-01.jpg";
@@ -11,6 +13,7 @@ import Hunt04 from "../imges/hyp/Biggy-Treasure-Hunt-04.jpg";
 import Hunt05 from "../imges/hyp/Biggy-Treasure-Hunt-05.jpg";
 import Hunt06 from "../imges/hyp/Biggy-Treasure-Hunt-06.jpg";
 import Hunt07 from "../imges/hyp/Biggy-Treasure-Hunt-07.jpg";
+import BiggyHead from "../imges/BiggyHead.png";
 
 const MissionHYP = () => {
   const [missionData, setMissionData] = useState([]);
@@ -18,12 +21,18 @@ const MissionHYP = () => {
   const [processData, setProcessData] = useState([]);
   const [error, setError] = useState(null);
   const userId = sessionStorage.getItem("userId");
+  const [rewardData, setRewardData] = useState(null);
+  const [rewardFetched, setRewardFetched] = useState(false);
+  const history = useHistory();
 
   const params = queryString.parse(window.location.search);
   const qr = params.qr;
 
   useEffect(() => {
     fetchData();
+    if (setMissionData) {
+      fetchReward(userId);
+    }
   }, []);
 
   const fetchData = async () => {
@@ -70,7 +79,11 @@ const MissionHYP = () => {
         } else if (checkinResponse.data.status === "success") {
           if (checkinResponse.data.message === "get reward") {
             setError(checkinResponse.data.message);
-            console.log("Reward received!"); // Add this line
+            console.log("Reward received!");
+            if (!rewardFetched) {
+              await fetchReward(userId);
+              setRewardFetched(true);
+            }
           } else if (checkinResponse.data.message === "success") {
             setError(checkinResponse.data.message);
             window.location.reload();
@@ -79,6 +92,55 @@ const MissionHYP = () => {
           }
         }
       }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  //reward
+  const fetchReward = async () => {
+    try {
+      await fetchData().then(() => {
+        if (!missionData) {
+          console.log("bigpointId is null");
+          return;
+        }
+        const bigpointId =
+          missionData.bigpoint_id === null ? "null" : missionData.bigpoint_id;
+        const requestData = {
+          userId: userId,
+          rewardType: 2,
+          bigpointId: bigpointId,
+        };
+        console.log("Data sent to API:", requestData);
+
+        axios
+          .post(
+            `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/reward/getreward/`,
+            requestData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log("Response data:", response.data);
+            if (response.data.status === "success") {
+              setRewardData(response.data);
+              setError(response.data.message);
+              setTimeout(() => {
+                console.log("response message:", response.data.message);
+                setError(response.data.message); 
+              }, 3000);
+            } else {
+              // handle error
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -94,10 +156,16 @@ const MissionHYP = () => {
     7: Hunt07,
   };
 
+  const navigateToMainMission = () => {
+    history.push("/mainmission");
+  };
 
   return (
     <div>
       <Grid sx={{ m: 1 }}>
+        <IconButton onClick={navigateToMainMission}>
+          <ArrowBackIosIcon sx={{ stroke: "#ed1c24", strokeWidth: 2 }} />
+        </IconButton>
         {/* <div>
           <h2>Total QR Codes: {processData.length}</h2>
           {processData.map((process, index) => (
@@ -109,7 +177,7 @@ const MissionHYP = () => {
             </div>
           ))}
         </div> */}
-        <Grid item xs={12} sx={{ mb: 2, mt: 3 }}>
+        <Grid item xs={12} sx={{ mb: 2, mt: 1 }}>
           <Typography fontSize={22} color="#ed1c24" align="center">
             <b>
               {" "}
@@ -118,58 +186,51 @@ const MissionHYP = () => {
             </b>
           </Typography>
         </Grid>
-
         <Grid container>
           {[1, 2, 3, 4, 5, 6, 7].map((stageNumber) => {
             const mission = missionData.find(
               (mission) => mission.check_point_name === `stage ${stageNumber}`
             );
-
-            // Define the logo image URL
-            const logoImageUrl =
-              "https://png.pngtree.com/png-vector/20220614/ourmid/pngtree-vector-completed-stamp-illustration-background-grunge-vector-png-image_13888860.png"; // Update this with your logo image URL
             return (
               <Grid item xs={stageNumber === 1 ? 12 : 4} key={stageNumber}>
-                <div
-                  style={{
-                    width: "100%", // Default width for stages other than stage 1
-                    height: stageNumber === 1 ? "120px" : "120px", // Adjusted height for stage 1
-                    border: "none",
-                    background: `url(${imageUrls[stageNumber]}) center/cover no-repeat `,
-                    // background: mission
-                    //   ? `url(${imageUrls[stageNumber]}) center/cover no-repeat `
-                    //   : "lightgrey",
-                  }}
-                >
-                  {mission ? (
-                    <Box
-                      container
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      component="img"
-                      alt="BigC"
-                      src={logoImageUrl}
-                      width="80px"
-                      height="70px"
-                      textAlign="center"
-                      justify="center"
-                      // sx={{ borderRadius: 6 }}
-                    />
-                  ) : (
-                    <Typography
-                      sx={{
-                        fontsize: 14,
-                        textDecoration: "none",
-                        fontFamily: "Prompt",
-                        p: 1,
-                        color: "#ed1c24",
-                      }}
-                    >
-                      Stage {stageNumber}
-                    </Typography>
-                  )}
-                </div>
+                <a href="/scanqr">
+                  <div
+                    style={{
+                      width: "100%",
+                      height: stageNumber === 1 ? "120px" : "120px",
+                      border: "none",
+                      background: `url(${imageUrls[stageNumber]}) center/cover no-repeat `,
+                    }}
+                  >
+                    {mission ? (
+                      <Box
+                        container
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        component="img"
+                        alt="BigC"
+                        src={BiggyHead}
+                        width="100px"
+                        height="100px"
+                        textAlign="center"
+                        justify="center"
+                      />
+                    ) : (
+                      <Typography
+                        sx={{
+                          fontsize: 14,
+                          textDecoration: "none",
+                          fontFamily: "Prompt",
+                          p: 1,
+                          color: "#ed1c24",
+                        }}
+                      >
+                        {/* Stage {stageNumber} */}
+                      </Typography>
+                    )}
+                  </div>
+                </a>
               </Grid>
             );
           })}

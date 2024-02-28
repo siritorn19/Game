@@ -12,11 +12,14 @@ class ScanQR extends Component {
 
   handleScan = (data) => {
     if (data) {
-      this.setState({
-        qrData: data,
-      }, () => {
-        this.redirectBasedOnQRData(data);
-      });
+      this.setState(
+        {
+          qrData: data,
+        },
+        () => {
+          this.redirectBasedOnQRData(data);
+        }
+      );
     }
   };
 
@@ -26,26 +29,46 @@ class ScanQR extends Component {
 
   redirectBasedOnQRData = (data) => {
     const params = this.getParamsFromQRData(data);
-    if (params && params.p) {
+    if (params || params.p || params.qr) {
       let redirectPage;
-      if (params.p === 'hyp') {
-        redirectPage = 'missionhyp';
-      } else if (params.p === 'mini') {
-        redirectPage = 'missionbcm';
+      // Check qr parameter to determine redirectPage
+      if (params.qr === 'B2iSLO' || params.qr === 'Yn75EO' || params.qr === '13YZD3' || params.qr === 'IgsdWE' || params.qr === 'skvi69' || params.qr === 'aKvg6N' || params.qr === 'wMPC7B') {
+        redirectPage = "missionhyp";
+      } else if (params.qr === '5XRMgB') {
+        redirectPage = "mainmission";
       }
       if (redirectPage) {
         window.location.href = `/${redirectPage}?qr=${params.qr}`;
       }
+      console.log( window.location.href )
     }
   };
 
+  // redirectBasedOnQRData = (data) => {
+  //   const params = this.getParamsFromQRData(data);
+  //   if (params && params.p) {
+  //     let redirectPage;
+  //     if (params.p === "hyp") {
+  //       redirectPage = "missionhyp";
+  //     } else if (params.p === "mini") {
+  //       redirectPage = "missionbcm";
+  //     }
+  //     // Check if qr parameter is 'wMPC7B' and set redirectPage accordingly
+  //     if (params.qr === "wMPC7B") {
+  //       redirectPage = "missionhyp";
+  //     }
+  //     if (redirectPage) {
+  //       window.location.href = `/${redirectPage}?qr=${params.qr}`;
+  //     }
+  //   }
+  // };
+
   getParamsFromQRData = (data) => {
-    // Assuming the QR code data is in URL format
     try {
       const url = new URL(data);
       const searchParams = new URLSearchParams(url.search);
-      const p = searchParams.get('p');
-      const qr = searchParams.get('qr');
+      const p = searchParams.get("p");
+      const qr = searchParams.get("qr");
       return { p, qr };
     } catch (error) {
       console.error("Error parsing QR data:", error);

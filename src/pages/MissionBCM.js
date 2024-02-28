@@ -1,28 +1,37 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, Typography, Box } from "@mui/material";
+import { Grid, Typography, Box, IconButton, Link } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import queryString from "query-string";
+import { useHistory } from "react-router-dom";
 import HowtoPlay from "../components/HowtoPlay";
 import PopupQRReuse from "../components/AlertqrReuse";
 import Hunt01 from "../imges/hyp/Biggy-Treasure-Hunt-01.jpg";
+import BiggyHead from "../imges/BiggyHead.png";
 
 const MissionBCM = () => {
   const [missionData, setMissionData] = useState([]);
   const [status, setStatus] = useState("");
   const [processData, setProcessData] = useState([]);
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [rewardData, setRewardData] = useState(null);
+  const [rewardFetched, setRewardFetched] = useState(false);
   const userId = sessionStorage.getItem("userId");
+  const history = useHistory();
 
   const params = queryString.parse(window.location.search);
   const qr = params.qr;
 
   useEffect(() => {
     fetchData();
+    if (setMissionData) {
+      fetchReward(userId);
+    }
   }, []);
 
   const fetchData = async () => {
     try {
-      // console.log(`userId BCM:${userId}`);
       const missionResponse = await axios.get(
         `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/process/getallprocess/${userId}`,
         {
@@ -32,20 +41,11 @@ const MissionBCM = () => {
         }
       );
       setStatus(missionResponse.data.status);
-      //   console.log("get :", missionResponse);
-
       if (missionResponse.data.status === "success") {
         setMissionData(missionResponse.data.data);
-        // setError(missionResponse.data.message)
-      }
-      // const result = await response.json();
-      setStatus(missionResponse.status);
-      if (missionResponse.status === "success") {
-        setMissionData(missionResponse.data);
         setProcessData(missionResponse.data);
       }
 
-      // Send check-in request if qr param exists
       if (qr) {
         const checkinResponse = await axios.post(
           "https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/process/checkin/",
@@ -59,16 +59,20 @@ const MissionBCM = () => {
             },
           }
         );
-        console.log("post: ", checkinResponse);
+        // console.log("post: ", checkinResponse);
         if (checkinResponse.data.status === "error") {
           setError(checkinResponse.data.message);
         } else if (
           checkinResponse.data.status === "success" ||
           checkinResponse.data.message === "get reward for bigC mini"
         ) {
-          console.log("get reward for bigC mini"); // Add this line
+          console.log("get reward for bigC mini");
           setError(checkinResponse.data.message);
-          window.location.reload();
+          if (!rewardFetched) {
+            await fetchReward(userId);
+            setRewardFetched(true);
+          }
+          //   window.location.reload();
         } else {
           console.log("Check-in Mini successful");
         }
@@ -78,10 +82,75 @@ const MissionBCM = () => {
     }
   };
 
+  //reward
+  const fetchReward = async () => {
+    try {
+      await fetchData().then(() => {
+        if (!missionData) {
+          console.log("bigpointId is null");
+          return;
+        }
+        const bigpointId =
+          missionData.bigpoint_id === null ? "null" : missionData.bigpoint_id;
+        const requestData = {
+          userId: userId,
+          rewardType: 2,
+          bigpointId: bigpointId,
+        };
+        console.log("Data sent to API:", requestData);
+
+        axios
+          .post(
+            `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/reward/getreward/`,
+            requestData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log("Response data:", response.data);
+            if (response.data.status === "success") {
+              setRewardData(response.data);
+              setError(response.data.message);
+              setTimeout(() => {
+                console.log("response message:", response.data.message); // Log error message
+                setError(response.data.message); // Update error state
+              }, 3000);
+              //   setTimeout(() => {
+              //     setError(response.data.message);
+              //   }, 3000);
+            } else {
+              // handle error
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  //   useEffect(() => {
+  //     if (setMissionData) {
+  //       fetchReward();
+  //     }
+  //   }, [userId]);
+
+  const navigateToMainMission = () => {
+    history.push("/mainmission");
+  };
+
   return (
     <div>
       <Grid sx={{ m: 1 }}>
-        <Grid item xs={12} sx={{ mb: 2, mt: 3 }}>
+        <IconButton onClick={navigateToMainMission}>
+          <ArrowBackIosIcon sx={{ stroke: "#ed1c24", strokeWidth: 2 }} />
+        </IconButton>
+        <Grid item xs={12} sx={{ mb: 2, mt: 1 }}>
           <Typography fontSize={22} color="#ed1c24" align="center">
             <b>
               Biggy Hunt Challenge <br />
@@ -89,42 +158,41 @@ const MissionBCM = () => {
             </b>
           </Typography>
         </Grid>
-        <Grid container="true">
+        <Grid container>
           {[1].map((stageNumber) => {
             const mission = missionData.find(
               (mission) => mission.check_point_name === "stage Big C mini"
             );
 
-            // Define the logo image URL
-            const logoImageUrl =
-              "https://png.pngtree.com/png-vector/20220614/ourmid/pngtree-vector-completed-stamp-illustration-background-grunge-vector-png-image_13888860.png"; // Update this with your logo image URL
             return (
               <Grid item xs={12} key={stageNumber}>
-                <div
-                  style={{
-                    width: "100%", // Default width for stages other than stage 1
-                    height: stageNumber === 1 ? "120px" : "120px", // Adjusted height for stage 1
-                    border: "none",
-                    background: `url(${Hunt01}) center/cover no-repeat`,
-                  }}
-                >
-                  {mission &&
-                    mission.check_point_name === "stage Big C mini" && (
-                      <Box
-                        container
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        component="img"
-                        alt="BigC"
-                        src={logoImageUrl}
-                        width="80px"
-                        height="70px"
-                        textAlign="center"
-                        justify="center"
-                      />
-                    )}
-                </div>
+                <a href="/scanqr">
+                  <div
+                    style={{
+                      width: "100%",
+                      height: stageNumber === 1 ? "120px" : "120px",
+                      border: "none",
+                      background: `url(${Hunt01}) center/cover no-repeat`,
+                    }}
+                  >
+                    {mission &&
+                      mission.check_point_name === "stage Big C mini" && (
+                        <Box
+                          container
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          component="img"
+                          alt="BigC"
+                          src={BiggyHead}
+                          width="120px"
+                          height="120px"
+                          textAlign="center"
+                          justify="center"
+                        />
+                      )}
+                  </div>
+                </a>
               </Grid>
             );
           })}
@@ -132,7 +200,6 @@ const MissionBCM = () => {
         {error && <PopupQRReuse message={error} />}
       </Grid>
       <Grid sx={{ m: 2 }}>
-        {/* วิธีเล่น */}
         <HowtoPlay />
       </Grid>
     </div>

@@ -12,7 +12,7 @@ import {
 import Avatar from "@mui/material/Avatar";
 import PopupAward from "./AleartAward";
 // import Gem from "../imges/gem.png";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 const Navbar = ({ userName, pictureUrl }) => {
@@ -24,7 +24,7 @@ const Navbar = ({ userName, pictureUrl }) => {
 
   const fetchUserData = async () => {
     try {
-      console.log(`userLineId-: ${userLineId}`);
+      // console.log(`userLineId-: ${userLineId}`);
       const response = await axios.get(
         `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/user/checkuser/${userLineId}`,
         {
@@ -33,7 +33,7 @@ const Navbar = ({ userName, pictureUrl }) => {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status === 200) {
         const data = response.data;
         if (data.status === "success") {
@@ -50,66 +50,67 @@ const Navbar = ({ userName, pictureUrl }) => {
   };
 
 
-
-  const fetchReward = async () => {
-    try {
-      // console.log(`Get reward-: ${userLineId}`);
-      await fetchUserData().then(() => {
-        if (!userData) {
-          console.log("bigpointId is null"); // Log the status when bigpointId is null
-          // setError("Failed to get reward: bigpointId is null");
-          return; 
-        }
-        const bigpointId = userData.bigpoint_id === null ? "null" : userData.bigpoint_id;
-        const requestData = {
-          userId: userLineId,
-          rewardType: 1,
-          bigpointId: bigpointId,
-        };
-        console.log("Data sent to API:", requestData); // Log the data sent to the API
+  // const fetchReward = async (rewardType) =>  {
+  //   try {
+  //     await fetchUserData().then(() => {
+  //       if (!userData) {
+  //         console.log("bigpointId is null");
+  //         return; 
+  //       }
+  //       const bigpointId = userData.bigpoint_id === null ? "null" : userData.bigpoint_id;
+  //       const requestData = {
+  //         userId: userLineId,
+  //         rewardType: 2,
+  //         bigpointId: bigpointId,
+  //       };
+  //       console.log("Data sent to API:", requestData);
+  //       axios.post(
+  //         `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/reward/getreward/`,
+  //         requestData,
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       )
+  //       .then(response => {
+  //         console.log("Response data:", response.data);
+  //         if (response.data.status === "failed") {
+  //           setRewardData(response.data);
+  //           window.alert("Get Reward");
+  //           setError(response.data.status)
+  //         } else {
+  //         } 
+  //       })
+  //       .catch(error => {
+  //         console.error("Error fetching data:", error);
+  //       });
+  //     });
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
   
-        axios.post(
-          `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/reward/getreward/`,
-          requestData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then(GetRewardResponse => {
-          console.log("Response data:", GetRewardResponse.data);
-          if (GetRewardResponse.data.status === "success") {
-            setRewardData(GetRewardResponse.data);
-            window.alert("Get Reward"); // Display alert for success
-          } else {
-            // setError(GetRewardResponse.data.message);
-          }
-        })
-        .catch(error => {
-          console.error("Error fetching data:", error);
-          // setError("Failed to get reward");
-        });
-      });
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      // setError("Failed to get reward");
-    }
-  };
-
+ 
 
   useEffect(() => {
     if (userLineId !== "") {
       fetchUserData();
-    }
-  }, [userLineId]);
-
-  useEffect(() => {
-    if (userData) {
-      fetchReward(userLineId);
-    }
+    } 
   }, []);
 
+
+  // useEffect(() => {
+  //   if (userData) {
+  //     fetchReward(userLineId);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (userData) {
+  //     fetchReward();
+  //   }
+  // }, []);
 
 
   if (error) {
@@ -117,13 +118,15 @@ const Navbar = ({ userName, pictureUrl }) => {
   }
 
   if (!userData) {
-    return <div><CircularProgress /></div>;
+    return (
+      <div><CircularProgress /></div>
+    );
   }
 
   return (
     <>
       <AppBar position="static" sx={{ background: "#ed1c24" }}>
-        <PopupAward error={error} />
+      <PopupAward error={error} rewardData={rewardData} /> {/* Pass the popup message and reward data as props */}
         <Grid
           container
           spacing={0}
@@ -138,21 +141,21 @@ const Navbar = ({ userName, pictureUrl }) => {
               <p>Bigpoint ID: {userData.bigpoint_id}</p>
               <p>Line mid: {userData.line_mid}</p>
               <p>Store Reward: {userData.store_reward.toString()}</p>
+              <p>mini_reward: {userData.mini_reward.toString()}</p>
             </div>
-          )} 
+          )}  */}
 
-        {rewardData && (
+      {/*   {rewardData && (
             <div>
               <p>Status: {rewardData.status}</p>
               <p>Message: {rewardData.message}</p>
             </div>
           )}
           {error && <div>Error: {error}</div>}
-          {!userData && !rewardData && !error && <div>Loading...</div>}
+          {!userData && !rewardData && !error && <div>Loading...</div>} 
         </div> */}
 
-
-          <Toolbar sx={{ m: 0 }}>
+          <Toolbar sx={{ m: 0, p: 0.2 }}>
             <div style={{ width: "100%" }}>
               <Card
                 sx={{
@@ -176,6 +179,7 @@ const Navbar = ({ userName, pictureUrl }) => {
                       />
                       <Typography
                         fontSize="15px"
+                        fontWeight="600"
                         color="#fff"
                         sx={{ p: 0.2, ml: 0.5 }}
                       >
