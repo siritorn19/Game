@@ -1,0 +1,82 @@
+.Main-Hunt-Box{
+    height: 400px;
+    width: 400px;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    z-index: 0;
+}
+.Main-Hunt-TopLayer-Box{
+    height: 400px;
+    width: 400px;
+    position: absolute;
+    z-index: 3;
+}
+.Main-Hunt-HYP-Box,.Main-Hunt-MINI-Box{
+    height: 200px;
+    z-index: 3;
+}
+.Main-Hunt-animate-Box{
+    height: 400px;
+    width: 400px;
+    position: absolute;
+    z-index: 1;
+}
+.Main-BiggyHead-Box{
+    width: 140px;
+    margin-left: 130px;
+    display: block;
+    float: left;
+}
+.Main-BiggyHead-Box>img{
+    width: 100%;
+}
+.Main-Counter-Box{
+    position: absolute;
+    right: 55px;
+    margin-top: 38px;
+}
+.Main-Camera-Box{
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    width: 60px;
+    height: 60px;
+}
+.Main-Camera-Box>img{
+    width: 100%;
+}
+
+@media (max-width:400px) {
+    .Main-Hunt-Box{
+        height: 300px;
+        width: 300px;    
+    }
+    .Main-Hunt-TopLayer-Box{
+        height: 300px;
+        width: 300px;
+    }    
+    .Main-Hunt-HYP-Box,.Main-Hunt-MINI-Box{
+        height: 150px;
+    }    
+    .Main-Hunt-animate-Box{
+        height: 300px;
+        width: 300px;
+    }
+    .Main-BiggyHead-Box{
+        width: 100px;
+        margin-left: 80px;
+    }
+    .Main-Counter-Box{
+        right: 24px;
+        margin-top: 25px;
+    }
+    .Main-Camera-Box{
+        right: 5px;
+        bottom: 5px;
+        width: 50px;
+        height: 50px;
+    }    
+    
+}

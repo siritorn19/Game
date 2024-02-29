@@ -12,9 +12,7 @@ import Lottie from "lottie-react";
 import WalkAnimation from "../helpper/Animation_1.json";
 import hyp from "../imges/1hyp.jpg";
 import bcm from "../imges/2mini.jpg";
-import mainBg from "../imges/main-bg.jpg";
 import cam from "../imges/cam.png";
-import "./MainMission.css";
 
 const MainMission = () => {
   const [processData, setProcessData] = useState([]);
@@ -66,6 +64,7 @@ const MainMission = () => {
     };
     fetchData();
   }, [userId]);
+
 
   // scan mini
   const params = queryString.parse(window.location.search);
@@ -188,78 +187,108 @@ const MainMission = () => {
         </Typography>
       </Grid>
 
+      {/* HPY */}
       <Grid item xs={12}>
-        <Box
-          className="Main-Hunt-Box"
-          sx={{
-            background: `url(${mainBg}) center/cover no-repeat`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-        >
-          {/* animate */}
-          <Box className="Main-Hunt-animate-Box">
-            <Lottie
-              animationData={WalkAnimation}
-              loop={true}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                pointerEvents: "none",
-              }}
+        <Link to="./MissionHYP" style={{ textDecoration: "none" }}>
+          <Grid
+            container
+            sx={{
+              background: `url(${hyp}) center/cover no-repeat`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              height: "180px",
+              width: "100%",
+              textDecoration: "none",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box
+              container
+              display="flex"
+              component="img"
+              alt="BigC"
+              width="0px"
+              height="0px"
+              sx={{ ml: 7 }}
             />
-          </Box>
-          <Box className="Main-Hunt-TopLayer-Box">
-            {/* HYP */}
-            <Link to="./MissionHYP" style={{ textDecoration: "none" }}>
-              <Box className="Main-Hunt-HYP-Box">
-                <Box className="Main-BiggyHead-Box">
-                  {stageCount >= 6 ? <img src={BiggyHead} alt="BigC" /> : ""}
-                </Box>
-                <Box className="Main-Counter-Box">
-                  <Typography
-                    fontSize={20}
-                    color="#ed1c24"
-                    align="center"
+            {stageCount === 6 && (
+              <img src={BiggyHead} alt="BigC" width="150px" height="150px" />
+            )}
+            <Box display="flex" justifyContent="flex-end" m={2} p={1}>
+              <Box>
+                <Typography
+                  fontSize={20}
+                  color="#ed1c24"
+                  align="center"
+                  sx={{
+                    fontFamily: "Prompt",
+                    textDecoration: "none",
+                  }}
+                >
+                  แสกนแล้ว{" "}
+                </Typography>
+                <Typography
+                  fontSize={20}
+                  fontWeight={800}
+                  color="#ed1c24"
+                  align="center"
+                  sx={{ fontFamily: "Prompt" }}
+                >
+                  {stageCount}/7
+                  <br />
+                  <img src={cam} alt="BigC" width="40px" height="40px" />
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+        </Link>
+      </Grid>
+
+      {/* BCM */}
+      <div style={{ width: "100%" }}>
+        <Grid container>
+          {[1].map((stageNumber) => {
+            const mission = missionData.find(
+              (mission) => mission.check_point_name === "stage Big C mini"
+            );
+
+            return (
+              <Grid item xs={12} key={stageNumber}>
+                <Link to="./scanqr" style={{ textDecoration: "none" }}>
+                  <Grid
+                    container
                     sx={{
-                      fontFamily: "Prompt",
+                      background: `url(${bcm}) center/cover no-repeat`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundSize: "cover",
+                      height: "180px",
+                      width: "100%",
                       textDecoration: "none",
+                      display: "flex",
+                      justifyContent: "space-between",
                     }}
                   >
-                    แสกนแล้ว{" "}
-                  </Typography>
-                  <Typography
-                    fontSize={20}
-                    fontWeight={800}
-                    color="#ed1c24"
-                    align="center"
-                    sx={{ fontFamily: "Prompt" }}
-                  >
-                    {stageCount}/7
-                  </Typography>
-                </Box>
-              </Box>
-            </Link>
-
-            {/* BCM */}
-            <Link to="./scanqr" style={{ textDecoration: "none" }}>
-              <Box className="Main-Hunt-MINI-Box">
-                {[1].map((stageNumber) => {
-                  const mission = missionData.find(
-                    (mission) => mission.check_point_name === "stage Big C mini"
-                  );
-                  return (
-                    <Box>
-                      <Box className="Main-BiggyHead-Box">
-                        {mission &&
-                          mission.check_point_name === "stage Big C mini" && (
-                            <img src={BiggyHead} alt="BigC" />
-                          )}
-                      </Box>
-                      <Box className="Main-Counter-Box">
+                    <Box
+                      container
+                      display="flex"
+                      component="img"
+                      alt="BigC"
+                      width="0px"
+                      height="0px"
+                      sx={{ ml: 7 }}
+                    />
+                    {mission &&
+                      mission.check_point_name === "stage Big C mini" && (
+                        <img
+                          src={BiggyHead}
+                          alt="BigC"
+                          width="150px"
+                          height="150px"
+                        />
+                      )}
+                    <Box display="flex" justifyContent="flex-end" m={2} p={1}>
+                      <Box>
                         <Typography
                           fontSize={20}
                           color="#ed1c24"
@@ -278,28 +307,45 @@ const MainMission = () => {
                           align="center"
                           sx={{ fontFamily: "Prompt" }}
                         >
-                          {stage8Count}/1
+                          {stage8Count}/1 <br />
+                          <img
+                            src={cam}
+                            alt="BigC"
+                            width="40px"
+                            height="40px"
+                          />
                         </Typography>
                       </Box>
                     </Box>
-                  );
-                })}
-                <Box className="Main-Camera-Box">
-                  <img src={cam} alt="BigC" />
-                </Box>
-              </Box>
-            </Link>
-          </Box>
-        </Box>
-      </Grid>
+                  </Grid>
+                </Link>
+              </Grid>
+            );
+          })}
+        </Grid>
 
-      <div style={{ width: "100%" }}>
         {error && <PopupQRReuse message={error} />}
         {award && <PopupAward message={award} />}
       </div>
 
       {/* วิธีเล่น */}
       <HowtoPlay />
+
+      {/* Animation */}
+      <Grid item xs={12}>
+        <Lottie
+          animationData={WalkAnimation}
+          loop={true}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+          }}
+        />
+      </Grid>
     </Grid>
   );
 };
