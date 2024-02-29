@@ -1,7 +1,15 @@
 import * as React from "react";
 import { styled, css } from "@mui/system";
 import { Button } from "@mui/base/Button";
-import { Dialog, DialogTitle, DialogActions } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  Grid,
+  CardMedia,
+  Box,
+} from "@mui/material";
+import BiggyHead from "../imges/BiggyHead.png";
+import "./Alert.css";
 
 const PopupQRReuse = ({ message }) => {
   const [open, setOpen] = React.useState(true);
@@ -13,24 +21,42 @@ const PopupQRReuse = ({ message }) => {
   return (
     <div>
       <Dialog
+        className="alert-dialog"
         align="center"
         open={open}
         onClose={handleClose}
-        sx={{ p: 2, borderRadius: 10, justifyContent: "center" }}
+        sx={{
+          p: 2,
+          borderRadius: 25,
+          justifyContent: "center",
+          borderColor: "#555",
+        }}
       >
-        <DialogTitle sx={{ textAlign: "center", fontSize: "22px", p: 3 }}>
-          <b>{message}</b>
-        </DialogTitle>
-        <DialogActions>
-          <ModalButton onClick={handleClose} sx={{ p: 2 }}>
-            CLOSE
-          </ModalButton>
-        </DialogActions>
+        <DialogContent className="box-dialog">
+          <Grid container spacing={1}>
+            <Grid item sm={12} xs={12}>
+              <CardMedia
+                className="box-dialog-img"
+                component="img"
+                image={BiggyHead}
+              />
+            </Grid>
+            <Grid item sm={12} xs={12}>
+              <b>{message}</b>
+            </Grid>
+            <Grid item sm={12} xs={12}>
+              <Box className="btn-dialog">
+                <Button sx={{ color: "#fff" }} onClick={handleClose}>
+                  CLOSE
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
+        </DialogContent>
       </Dialog>
     </div>
   );
 };
-
 
 const ModalButton = styled(Button)(
   ({ theme }) => `

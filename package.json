@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.6",
     "dotenv": "^16.4.1",
+    "lottie-react": "^2.4.0",
     "modern-react-qr-reader": "^1.0.12",
     "query-string": "^8.2.0",
     "react": "^17.0.2",

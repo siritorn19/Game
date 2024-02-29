@@ -32,36 +32,30 @@ class ScanQR extends Component {
     if (params || params.p || params.qr) {
       let redirectPage;
       // Check qr parameter to determine redirectPage
-      if (params.qr === 'B2iSLO' || params.qr === 'Yn75EO' || params.qr === '13YZD3' || params.qr === 'IgsdWE' || params.qr === 'skvi69' || params.qr === 'aKvg6N' || params.qr === 'wMPC7B') {
+      if (
+        params.qr === "B2iSLO" ||
+        params.qr === "Yn75EO" ||
+        params.qr === "13YZD3" ||
+        params.qr === "IgsdWE" ||
+        params.qr === "skvi69" ||
+        params.qr === "aKvg6N" ||
+        params.qr === "wMPC7B"
+      ) {
         redirectPage = "missionhyp";
-      } else if (params.qr === '5XRMgB') {
+      } else if (params.qr === "5XRMgB") {
         redirectPage = "mainmission";
+      }
+      if (params.p === "hyp") {
+        redirectPage = "missionhyp";
+      } else if (params.p === "mini") {
+        redirectPage = "missionbcm";
       }
       if (redirectPage) {
         window.location.href = `/${redirectPage}?qr=${params.qr}`;
       }
-      console.log( window.location.href )
+      console.log(window.location.href);
     }
   };
-
-  // redirectBasedOnQRData = (data) => {
-  //   const params = this.getParamsFromQRData(data);
-  //   if (params && params.p) {
-  //     let redirectPage;
-  //     if (params.p === "hyp") {
-  //       redirectPage = "missionhyp";
-  //     } else if (params.p === "mini") {
-  //       redirectPage = "missionbcm";
-  //     }
-  //     // Check if qr parameter is 'wMPC7B' and set redirectPage accordingly
-  //     if (params.qr === "wMPC7B") {
-  //       redirectPage = "missionhyp";
-  //     }
-  //     if (redirectPage) {
-  //       window.location.href = `/${redirectPage}?qr=${params.qr}`;
-  //     }
-  //   }
-  // };
 
   getParamsFromQRData = (data) => {
     try {
@@ -76,6 +70,7 @@ class ScanQR extends Component {
     }
   };
 
+  
   render() {
     return (
       <>

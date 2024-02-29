@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import "./index.css";
 import { Grid } from "@mui/material";
 import Home from "./pages/Home";
-import Mission from "./pages/Mission";
 import MainMission from "./pages/MainMission";
 import MissionHYP from "./pages/MissionHYP";
 import MissionBCM from "./pages/MissionBCM";
@@ -24,11 +23,12 @@ export default function App() {
         <Router>
           <LoginLineLiff />
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={MainMission} />
             <Route path="/mainmission" component={MainMission} />
             <Route path="/missionhyp" component={MissionHYP} />
             <Route path="/missionbcm" component={MissionBCM} />
-            <Route path="/mission" component={Mission} />
+            <Route path="/mainmission" component={MainMission} />
+            <Route path="/home" component={Home} />
             <Route path="/scanqr" component={ScanQR} />
             <Route path="*" render={() => <Redirect to="/" />} />
           </Switch>

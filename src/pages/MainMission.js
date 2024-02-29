@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Grid, Box, Typography, IconButton } from "@mui/material";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { Grid, Box, Typography } from "@mui/material";
 import queryString from "query-string";
 import { useHistory } from "react-router-dom";
 import PopupQRReuse from "../components/AlertqrReuse";
-import banner_hyp from "../imges/banner-hyp.jpg";
-import banner_bcm from "../imges/banner-bcm.jpg";
+import PopupAward from "../components/AleartAward";
 import HowtoPlay from "../components/HowtoPlay";
-import Hunt01 from "../imges/hyp/Biggy-Treasure-Hunt-01.jpg";
 import BiggyHead from "../imges/BiggyHead.png";
+import Lottie from "lottie-react";
+import WalkAnimation from "../helpper/Animation_1.json";
+import hyp from "../imges/1hyp.jpg";
+import bcm from "../imges/2mini.jpg";
+import cam from "../imges/cam.png";
 
 const MainMission = () => {
   const [processData, setProcessData] = useState([]);
   const [stageCount, setStageCount] = useState(0);
   const [stage8Count, setStage8Count] = useState(0);
   const userId = sessionStorage.getItem("userId");
-
   const [missionData, setMissionData] = useState([]);
   const [status, setStatus] = useState("");
   const [error, setError] = useState(null);
+  const [award, setAward] = useState(null);
   const [userData, setUserData] = useState(null);
   const [rewardData, setRewardData] = useState(null);
   const [rewardFetched, setRewardFetched] = useState(false);
@@ -43,13 +45,16 @@ const MainMission = () => {
           (process) => process.check_point_name === "stage Big C mini"
         );
 
+        const stageCount = stages1to7.filter(
+          (process) => process.check_point_type === 1
+        ).length;
+        const stage8Count = stage8.filter(
+          (process) => process.check_point_type === 2
+        ).length;
+
         // Set stage counts
-        setStageCount(
-          stages1to7.filter((process) => process.check_point_type === 1).length
-        );
-        setStage8Count(
-          stage8.filter((process) => process.check_point_type === 2).length
-        );
+        setStageCount(stageCount);
+        setStage8Count(stage8Count);
 
         // Set processData state
         setProcessData(result.data);
@@ -60,13 +65,14 @@ const MainMission = () => {
     fetchData();
   }, [userId]);
 
+
   // scan mini
   const params = queryString.parse(window.location.search);
   const qr = params.qr;
 
   useEffect(() => {
     fetchData();
-    if (setMissionData) {
+    if (setMissionData || qr) {
       fetchReward(userId);
     }
   }, []);
@@ -102,28 +108,26 @@ const MainMission = () => {
         );
         // console.log("post: ", checkinResponse);
         if (checkinResponse.data.status === "error") {
-          setError(checkinResponse.data.message);
+          setError("คุณได้แสกนจุดนี้แล้ว");
         } else if (
           checkinResponse.data.status === "success" ||
           checkinResponse.data.message === "get reward for bigC mini"
         ) {
-          console.log("get reward for bigC mini");
-          setError(checkinResponse.data.message);
           if (!rewardFetched) {
             await fetchReward(userId);
             setRewardFetched(true);
           }
+          // setAward("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
           //   window.location.reload();
         } else {
-          console.log("Check-in Mini successful");
+          console.log("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
         }
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log("Error fetching data:", error);
     }
   };
 
-  //reward
   const fetchReward = async () => {
     try {
       await fetchData().then(() => {
@@ -154,21 +158,20 @@ const MainMission = () => {
             console.log("Response data:", response.data);
             if (response.data.status === "success") {
               setRewardData(response.data);
-              setError(response.data.message);
               setTimeout(() => {
                 console.log("response message:", response.data.message); // Log error message
-                setError(response.data.message); // Update error state
-              }, 3000);
+                setAward("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
+              }, 5000);
             } else {
               // handle error
             }
           })
           .catch((error) => {
-            console.error("Error fetching data:", error);
+            console.log("Error fetching data:", error);
           });
       });
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log("Error fetching data:", error);
     }
   };
 
@@ -184,88 +187,66 @@ const MainMission = () => {
         </Typography>
       </Grid>
 
-      {/* HYP */}
-      <Link to="./MissionHYP" style={{ textDecoration: "none" }}>
-        <Grid
-          container
-          sx={{
-            backgroundImage: `url(${banner_hyp})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            height: "180px",
-            width: "100%",
-            borderRadius: 3,
-            mt: 3,
-          }}
-        >
-          <div style={{ width: "100%" }}>
+      {/* HPY */}
+      <Grid item xs={12}>
+        <Link to="./MissionHYP" style={{ textDecoration: "none" }}>
+          <Grid
+            container
+            sx={{
+              background: `url(${hyp}) center/cover no-repeat`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              height: "180px",
+              width: "100%",
+              textDecoration: "none",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box
+              container
+              display="flex"
+              component="img"
+              alt="BigC"
+              width="0px"
+              height="0px"
+              sx={{ ml: 7 }}
+            />
+            {stageCount === 6 && (
+              <img src={BiggyHead} alt="BigC" width="150px" height="150px" />
+            )}
             <Box display="flex" justifyContent="flex-end" m={2} p={1}>
-              <Box p={1}>
+              <Box>
                 <Typography
-                  fontSize={24}
+                  fontSize={20}
                   color="#ed1c24"
                   align="center"
-                  sx={{ fontFamily: "Prompt" }}
+                  sx={{
+                    fontFamily: "Prompt",
+                    textDecoration: "none",
+                  }}
                 >
                   แสกนแล้ว{" "}
                 </Typography>
                 <Typography
-                  fontSize={24}
+                  fontSize={20}
                   fontWeight={800}
                   color="#ed1c24"
                   align="center"
                   sx={{ fontFamily: "Prompt" }}
                 >
                   {stageCount}/7
+                  <br />
+                  <img src={cam} alt="BigC" width="40px" height="40px" />
                 </Typography>
               </Box>
             </Box>
-          </div>
-        </Grid>
-      </Link>
+          </Grid>
+        </Link>
+      </Grid>
 
-      {/* mini */}
-      {/* <Link to="/scanqr" style={{ textDecoration: "none" }}>
-        <Grid
-          container
-          sx={{
-            backgroundImage: `url(${banner_bcm})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            height: "180px",
-            width: "100%",
-            mt: 3,
-            borderRadius: 3,
-            textDecoration: "none",
-          }}
-        >
-          <div style={{ width: "100%" }}>
-            <Box display="flex" justifyContent="flex-end" m={2} p={1}>
-              <Box p={1}>
-                <Typography
-                  fontSize={24}
-                  color="#ed1c24"
-                  align="center"
-                  sx={{ fontFamily: "Prompt", textDecoration: "none" }}
-                >
-                  แสกนแล้ว{" "}
-                </Typography>
-                <Typography
-                  fontSize={24}
-                  fontWeight={800}
-                  color="#ed1c24"
-                  align="center"
-                  sx={{ fontFamily: "Prompt" }}
-                >
-                  {stage8Count}/1
-                </Typography>
-              </Box>
-            </Box>
-          </div>
-        </Grid>
-      </Link> */}
-
-      <Grid sx={{ m: 1 }}>
+      {/* BCM */}
+      <div style={{ width: "100%" }}>
         <Grid container>
           {[1].map((stageNumber) => {
             const mission = missionData.find(
@@ -273,99 +254,98 @@ const MainMission = () => {
             );
 
             return (
-              <Grid item xs={12} key={stageNumber} >
-                <a href="/scanqr">
+              <Grid item xs={12} key={stageNumber}>
+                <Link to="./scanqr" style={{ textDecoration: "none" }}>
                   <Grid
                     container
                     sx={{
-                      background: `url(${banner_bcm}) center/cover no-repeat`,
+                      background: `url(${bcm}) center/cover no-repeat`,
                       backgroundRepeat: "no-repeat",
                       backgroundSize: "cover",
                       height: "180px",
                       width: "100%",
-                      mt: 3,
-                      borderRadius: 3,
                       textDecoration: "none",
+                      display: "flex",
+                      justifyContent: "space-between",
                     }}
                   >
+                    <Box
+                      container
+                      display="flex"
+                      component="img"
+                      alt="BigC"
+                      width="0px"
+                      height="0px"
+                      sx={{ ml: 7 }}
+                    />
                     {mission &&
                       mission.check_point_name === "stage Big C mini" && (
-                        <Box
-                          container
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                          component="img"
-                          alt="BigC"
+                        <img
                           src={BiggyHead}
+                          alt="BigC"
                           width="150px"
                           height="150px"
-                          textAlign="center"
-                          justify="center"
                         />
                       )}
-                      <Box display="flex" justifyContent="flex-end" m={2} p={1} >
-                        <Box p={1}>
-                          <Typography
-                            fontSize={24}
-                            color="#ed1c24"
-                            align="center"
-                            sx={{
-                              fontFamily: "Prompt",
-                              textDecoration: "none",
-                            }}
-                          >
-                            แสกนแล้ว{" "}
-                          </Typography>
-                          <Typography
-                            fontSize={24}
-                            fontWeight={800}
-                            color="#ed1c24"
-                            align="center"
-                            sx={{ fontFamily: "Prompt" }}
-                          >
-                            {stage8Count}/1
-                          </Typography>
-                        </Box>
+                    <Box display="flex" justifyContent="flex-end" m={2} p={1}>
+                      <Box>
+                        <Typography
+                          fontSize={20}
+                          color="#ed1c24"
+                          align="center"
+                          sx={{
+                            fontFamily: "Prompt",
+                            textDecoration: "none",
+                          }}
+                        >
+                          แสกนแล้ว{" "}
+                        </Typography>
+                        <Typography
+                          fontSize={20}
+                          fontWeight={800}
+                          color="#ed1c24"
+                          align="center"
+                          sx={{ fontFamily: "Prompt" }}
+                        >
+                          {stage8Count}/1 <br />
+                          <img
+                            src={cam}
+                            alt="BigC"
+                            width="40px"
+                            height="40px"
+                          />
+                        </Typography>
                       </Box>
-                  
+                    </Box>
                   </Grid>
-                  {/* <div
-                    style={{
-                      width: "100%",
-                      height: "150px",
-                      border: "none",
-                      borderRadius: 3,
-                      background: `url(${banner_bcm}) center/cover no-repeat`,
-                    }}
-                  >
-                    {mission &&
-                      mission.check_point_name === "stage Big C mini" && (
-                        <Box
-                          container
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                          component="img"
-                          alt="BigC"
-                          src={BiggyHead}
-                          width="120px"
-                          height="120px"
-                          textAlign="center"
-                          justify="center"
-                        />
-                      )}
-                  </div> */}
-                </a>
+                </Link>
               </Grid>
             );
           })}
         </Grid>
+
         {error && <PopupQRReuse message={error} />}
-      </Grid>
+        {award && <PopupAward message={award} />}
+      </div>
 
       {/* วิธีเล่น */}
       <HowtoPlay />
+
+      {/* Animation */}
+      <Grid item xs={12}>
+        <Lottie
+          animationData={WalkAnimation}
+          loop={true}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+          }}
+        />
+      </Grid>
     </Grid>
   );
 };

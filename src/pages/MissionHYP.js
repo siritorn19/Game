@@ -6,6 +6,7 @@ import queryString from "query-string";
 import { useHistory } from "react-router-dom";
 import HowtoPlay from "../components/HowtoPlay";
 import PopupQRReuse from "../components/AlertqrReuse";
+import PopupAward from "../components/AleartAward";
 import Hunt01 from "../imges/hyp/Biggy-Treasure-Hunt-01.jpg";
 import Hunt02 from "../imges/hyp/Biggy-Treasure-Hunt-02.jpg";
 import Hunt03 from "../imges/hyp/Biggy-Treasure-Hunt-03.jpg";
@@ -20,6 +21,7 @@ const MissionHYP = () => {
   const [status, setStatus] = useState("");
   const [processData, setProcessData] = useState([]);
   const [error, setError] = useState(null);
+  const [award, setAward] = useState(null);
   const userId = sessionStorage.getItem("userId");
   const [rewardData, setRewardData] = useState(null);
   const [rewardFetched, setRewardFetched] = useState(false);
@@ -30,7 +32,7 @@ const MissionHYP = () => {
 
   useEffect(() => {
     fetchData();
-    if (setMissionData) {
+    if (setMissionData || qr) {
       fetchReward(userId);
     }
   }, []);
@@ -75,17 +77,17 @@ const MissionHYP = () => {
         );
         console.log("post: ", checkinResponse);
         if (checkinResponse.data.status === "error") {
-          setError(checkinResponse.data.message);
+          setError("คุณได้แสกนเรียบร้อยแล้ว");
         } else if (checkinResponse.data.status === "success") {
           if (checkinResponse.data.message === "get reward") {
-            setError(checkinResponse.data.message);
+            // setAward("ยินดีด้วย คุณรับรางวัลแล้ว");
             console.log("Reward received!");
             if (!rewardFetched) {
               await fetchReward(userId);
               setRewardFetched(true);
             }
           } else if (checkinResponse.data.message === "success") {
-            setError(checkinResponse.data.message);
+            setError("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
             window.location.reload();
           } else {
             console.log("Check-in successful");
@@ -93,7 +95,7 @@ const MissionHYP = () => {
         }
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log("Error fetching data:", error);
     }
   };
 
@@ -109,7 +111,7 @@ const MissionHYP = () => {
           missionData.bigpoint_id === null ? "null" : missionData.bigpoint_id;
         const requestData = {
           userId: userId,
-          rewardType: 2,
+          rewardType: 1,
           bigpointId: bigpointId,
         };
         console.log("Data sent to API:", requestData);
@@ -128,11 +130,10 @@ const MissionHYP = () => {
             console.log("Response data:", response.data);
             if (response.data.status === "success") {
               setRewardData(response.data);
-              setError(response.data.message);
               setTimeout(() => {
-                console.log("response message:", response.data.message);
-                setError(response.data.message); 
-              }, 3000);
+                console.log("response message:", response.data.message); // Log error message
+                setAward("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
+              }, 5000);
             } else {
               // handle error
             }
@@ -213,8 +214,6 @@ const MissionHYP = () => {
                         src={BiggyHead}
                         width="100px"
                         height="100px"
-                        textAlign="center"
-                        justify="center"
                       />
                     ) : (
                       <Typography
@@ -236,6 +235,7 @@ const MissionHYP = () => {
           })}
         </Grid>
         {error && <PopupQRReuse message={error} />}
+        {award && <PopupAward message={award} />}
       </Grid>
 
       {/* วิธีเล่น */}

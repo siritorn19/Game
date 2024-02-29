@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import PopupAward from "./AleartAward";
-// import Gem from "../imges/gem.png";
 import CircularProgress from "@mui/material/CircularProgress";
 
 
@@ -50,67 +49,13 @@ const Navbar = ({ userName, pictureUrl }) => {
   };
 
 
-  // const fetchReward = async (rewardType) =>  {
-  //   try {
-  //     await fetchUserData().then(() => {
-  //       if (!userData) {
-  //         console.log("bigpointId is null");
-  //         return; 
-  //       }
-  //       const bigpointId = userData.bigpoint_id === null ? "null" : userData.bigpoint_id;
-  //       const requestData = {
-  //         userId: userLineId,
-  //         rewardType: 2,
-  //         bigpointId: bigpointId,
-  //       };
-  //       console.log("Data sent to API:", requestData);
-  //       axios.post(
-  //         `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/reward/getreward/`,
-  //         requestData,
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       )
-  //       .then(response => {
-  //         console.log("Response data:", response.data);
-  //         if (response.data.status === "failed") {
-  //           setRewardData(response.data);
-  //           window.alert("Get Reward");
-  //           setError(response.data.status)
-  //         } else {
-  //         } 
-  //       })
-  //       .catch(error => {
-  //         console.error("Error fetching data:", error);
-  //       });
-  //     });
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-  
  
-
   useEffect(() => {
     if (userLineId !== "") {
       fetchUserData();
     } 
   }, []);
 
-
-  // useEffect(() => {
-  //   if (userData) {
-  //     fetchReward(userLineId);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (userData) {
-  //     fetchReward();
-  //   }
-  // }, []);
 
 
   if (error) {
@@ -126,7 +71,7 @@ const Navbar = ({ userName, pictureUrl }) => {
   return (
     <>
       <AppBar position="static" sx={{ background: "#ed1c24" }}>
-      <PopupAward error={error} rewardData={rewardData} /> {/* Pass the popup message and reward data as props */}
+      <PopupAward error={error} rewardData={rewardData} />
         <Grid
           container
           spacing={0}
@@ -193,41 +138,6 @@ const Navbar = ({ userName, pictureUrl }) => {
                 </Box>
               </Card>
             </div>
-
-            {/* <Card
-            sx={{
-              maxWidth: 300,
-              background: "#ed1c24",
-              boxShadow: "none",
-              border: 1,
-              borderRadius: 5,
-              borderColor: "#ffdc05",
-              pr: 5,
-            }}
-          >
-             <Box sx={{ p: 0.3 }}>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                borderRadius={1}
-              >
-                show Gem
-                <Box
-                  component="img"
-                  alt="BigC"
-                  // src={Gem}
-                  width="25px"
-                  textAlign="center"
-                  sx={{ pr: 1 }}
-                />
-                show name
-                <Typography variant="h8" color="common.white" sx={{ p: 0.2 }}>
-                  Point
-                </Typography>
-              </Stack>
-            </Box>
-          </Card> */}
           </Toolbar>
         </Grid>
       </AppBar>

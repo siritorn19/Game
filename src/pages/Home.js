@@ -27,7 +27,7 @@ const Home = () => {
 
   return (
     <Grid>
-      <Grid item xs={12} sx={{ mb: 2, mt: 2  }}>
+      <Grid item xs={12} sx={{ mb: 2, mt: 2 }}>
         <Typography fontSize={24} color="#ed1c24" align="center">
           <b>เกมลุ้นรางวัล</b>
         </Typography>
@@ -50,46 +50,44 @@ const Home = () => {
           }}
         >
           {/* Btn วิธีเล่นเกม */}
-          <Link to="#" style={{ textDecoration: "none" }}>
-            <Button
-              variant="contained"
-              style={{
-                borderRadius: 30,
-                backgroundColor: "#93d701",
-                padding: "6px 20px",
-                fontSize: "16px",
-                fontWeight: "600",
-                fontFamily: "Prompt",
-                border: 2,
-                borderColor: "#fff",
-                mr: 2, // Adjusted margin-right here
-              }}
-            >
-              วิธีเล่นเกม
-            </Button>
-          </Link>
-          {/* Btn รางวัลของฉัน */}
-          <Link
-            to="https://bigc-gamification-stg.web.app/reward"
-            style={{ textDecoration: "none" }}
+          <Button
+            href="https://bigc-gamification-stg.web.app/reward"
+            variant="contained"
+            style={{
+              borderRadius: 30,
+              backgroundColor: "#93d701",
+              padding: "6px 20px",
+              fontSize: "16px",
+              fontWeight: "600",
+              fontFamily: "Prompt",
+              border: 2,
+              borderColor: "#fff",
+              textDecoration: "none",
+              mr: 2,
+            }}
           >
-            <Button
-              variant="contained"
-              style={{
-                borderRadius: 30,
-                backgroundColor: "#ed1c24",
-                padding: "6px 20px",
-                fontSize: "16px",
-                fontWeight: "600",
-                fontFamily: "Prompt",
-                border: 2,
-                borderColor: "#fff",
-                mr: 3,
-              }}
-            >
-              รางวัลของฉัน
-            </Button>
-          </Link>
+            วิธีเล่นเกม
+          </Button>
+
+          {/* รางวัลของฉัน */}
+          <Button
+            href="https://bigc-gamification-stg.web.app/reward"
+            variant="contained"
+            style={{
+              borderRadius: 30,
+              backgroundColor: "#ed1c24",
+              padding: "6px 20px",
+              fontSize: "16px",
+              fontWeight: "600",
+              fontFamily: "Prompt",
+              border: 2,
+              borderColor: "#fff",
+              mr: 3,
+              textDecoration: "none",
+            }}
+          >
+            รางวัลของฉัน
+          </Button>
         </Box>
       </Grid>
 
