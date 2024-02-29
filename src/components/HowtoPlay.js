@@ -35,12 +35,12 @@ function HowtoPlay() {
           spacing={1}
           sx={{ borderRadius: 5, p: 2, backgroundColor: "grey.200" }}
         >
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             {/* <Link to="/scanqr"> */}
             <CameraAltIcon sx={{ fontSize: 50, color: "#000" }} />
             {/* </Link> */}
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography sx={{ fontFamily: "Prompt" }}>
               กดกล้องเพื่อสแกน QR Code ตามจุดที่กำหนด
             </Typography>
