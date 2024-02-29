@@ -1,0 +1,27 @@
+.HYP-Hunt-Box{
+    height: 400px;
+    width: 400px;
+    margin: 0 auto;
+    z-index: 0;
+}
+.HYP-Hunt-Item{
+    width: 100%;
+    height: 133px;
+}
+.HYP-Hunt-BiggyHead{
+    margin: 0 auto;
+    width: 120px;
+}
+
+@media (max-width:400px) {
+    .HYP-Hunt-Box{
+        height: 300px;
+        width: 300px;    
+    }
+    .HYP-Hunt-Item{
+        height: 100px;
+    }
+    .HYP-Hunt-BiggyHead{
+        width: 90px;
+    }
+}

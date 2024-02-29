@@ -15,6 +15,9 @@ import Hunt05 from "../imges/hyp/Biggy-Treasure-Hunt-05.jpg";
 import Hunt06 from "../imges/hyp/Biggy-Treasure-Hunt-06.jpg";
 import Hunt07 from "../imges/hyp/Biggy-Treasure-Hunt-07.jpg";
 import BiggyHead from "../imges/BiggyHead.png";
+import HYPItem from "../imges/HYP-Item.jpg";
+
+import "./MissionHYP.css";
 
 const MissionHYP = () => {
   const [missionData, setMissionData] = useState([]);
@@ -187,52 +190,54 @@ const MissionHYP = () => {
             </b>
           </Typography>
         </Grid>
-        <Grid container>
-          {[1, 2, 3, 4, 5, 6, 7].map((stageNumber) => {
-            const mission = missionData.find(
-              (mission) => mission.check_point_name === `stage ${stageNumber}`
-            );
-            return (
-              <Grid item xs={stageNumber === 1 ? 12 : 4} key={stageNumber}>
-                <a href="/scanqr">
-                  <div
-                    style={{
-                      width: "100%",
-                      height: stageNumber === 1 ? "120px" : "120px",
-                      border: "none",
-                      background: `url(${imageUrls[stageNumber]}) center/cover no-repeat `,
-                    }}
-                  >
-                    {mission ? (
-                      <Box
-                        container
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        component="img"
-                        alt="BigC"
-                        src={BiggyHead}
-                        width="100px"
-                        height="100px"
-                      />
-                    ) : (
-                      <Typography
-                        sx={{
-                          fontsize: 14,
-                          textDecoration: "none",
-                          fontFamily: "Prompt",
-                          p: 1,
-                          color: "#ed1c24",
-                        }}
-                      >
-                        {/* Stage {stageNumber} */}
-                      </Typography>
-                    )}
-                  </div>
-                </a>
-              </Grid>
-            );
-          })}
+        <Grid item xs={12}>
+          <Box
+            className="HYP-Hunt-Box"
+            sx={{
+              background: `url(${HYPItem}) center/cover no-repeat`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+            }}
+          >
+            <Grid container>
+              {[1, 2, 3, 4, 5, 6, 7].map((stageNumber) => {
+                const mission = missionData.find(
+                  (mission) =>
+                    mission.check_point_name === `stage ${stageNumber}`
+                );
+                return (
+                  <Grid item xs={stageNumber === 1 ? 12 : 4} key={stageNumber}>
+                    <a href="/scanqr">
+                      <div className="HYP-Hunt-Item">
+                        {mission ? (
+                          <Box
+                            className="HYP-Hunt-BiggyHead"
+                            container
+                            display="block"
+                            component="img"
+                            alt="BigC"
+                            src={BiggyHead}
+                          />
+                        ) : (
+                          <Typography
+                            sx={{
+                              fontsize: 14,
+                              textDecoration: "none",
+                              fontFamily: "Prompt",
+                              p: 1,
+                              color: "#ed1c24",
+                            }}
+                          >
+                            {/* Stage {stageNumber} */}
+                          </Typography>
+                        )}
+                      </div>
+                    </a>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
         </Grid>
         {error && <PopupQRReuse message={error} />}
         {award && <PopupAward message={award} />}
