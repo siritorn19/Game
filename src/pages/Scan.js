@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import QrReader from "modern-react-qr-reader";
-import { Grid } from "@mui/material";
+import { Grid, Typography, Box, IconButton, Link } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import HowtoPlay from "../components/HowtoPlay";
 
 class ScanQR extends Component {
   constructor(props) {
@@ -70,7 +72,14 @@ class ScanQR extends Component {
     }
   };
 
-  
+  handleBack = (e) => {
+    e.preventDefault();
+    window.history.go(-1);
+    return false;
+    //navigate(-1);
+    //window.location.href = `/${lang}/lobby`;
+  };
+
   render() {
     return (
       <>
@@ -78,9 +87,28 @@ class ScanQR extends Component {
           container
           spacing={0}
           direction="column"
+        >
+          <Grid sx={{ m: 1 }}>
+            <IconButton onClick={this.handleBack}>
+              <ArrowBackIosIcon sx={{ stroke: "#ed1c24", strokeWidth: 2 }} />
+            </IconButton>
+          </Grid>
+          <Grid item xs={12} sx={{ mb: 2, mt: 1 }}>
+            <Typography fontSize={22} color="#ed1c24" align="center">
+              <b>
+                Biggy Hunt Challenge <br />
+                นักช้อป มือโปร!! ตามล่าหาขุมสมบัติ
+              </b>
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          spacing={0}
+          direction="column"
           alignItems="center"
           justifyContent="center"
-          sx={{ minHeight: "100vh", backgroundColor: "#706e6e", m: 0, p: 0 }}
+          sx={{ minHeight: "10vh", backgroundColor: "#706e6e", m: 0, p: 0 }}
         >
           <QrReader
             delay={300}
@@ -90,6 +118,10 @@ class ScanQR extends Component {
             style={{ width: "100%", height: "100%" }}
           />
         </Grid>
+        <Grid sx={{ m: 2 }}>
+        <HowtoPlay />
+      </Grid>
+
       </>
     );
   }
