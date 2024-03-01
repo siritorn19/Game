@@ -44,7 +44,7 @@ const MissionHYP = () => {
     try {
       // console.log(`userLineId-: ${userId}`);
       const missionResponse = await axios.get(
-        `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/process/getallprocess/${userId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/process/getallprocess/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -67,7 +67,7 @@ const MissionHYP = () => {
       // Send check-in request if qr param exists
       if (qr) {
         const checkinResponse = await axios.post(
-          "https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/process/checkin/",
+          `${process.env.REACT_APP_BACKEND_URL}/process/checkin/`,
           {
             userId: userId,
             qrCodeId: qr,
@@ -121,7 +121,7 @@ const MissionHYP = () => {
 
         axios
           .post(
-            `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/reward/getreward/`,
+            `${process.env.REACT_APP_BACKEND_URL}/reward/getreward/`,
             requestData,
             {
               headers: {
@@ -135,7 +135,7 @@ const MissionHYP = () => {
               setRewardData(response.data);
               setTimeout(() => {
                 console.log("response message:", response.data.message); // Log error message
-                setAward("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
+                setAward("ส่วนลดซื้อสินค้ามูลค่า 250 บาท จำนวน 2 คูปอง");
               }, 5000);
             } else {
               // handle error
@@ -241,7 +241,7 @@ const MissionHYP = () => {
         </Grid>
         {error && <PopupQRReuse message={error} />}
         {award && <PopupAward message={award} />}
-      </Grid>
+        </Grid>
 
       {/* วิธีเล่น */}
       <Grid sx={{ m: 2 }}>

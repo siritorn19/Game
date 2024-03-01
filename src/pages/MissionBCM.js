@@ -33,7 +33,7 @@ const MissionBCM = () => {
   const fetchData = async () => {
     try {
       const missionResponse = await axios.get(
-        `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/process/getallprocess/${userId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/process/getallprocess/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const MissionBCM = () => {
 
       if (qr) {
         const checkinResponse = await axios.post(
-          "https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/process/checkin/",
+          `${process.env.REACT_APP_BACKEND_URL}/process/checkin/`,
           {
             userId: userId,
             qrCodeId: qr,
@@ -101,7 +101,7 @@ const MissionBCM = () => {
 
         axios
           .post(
-            `https://line-game-treasure-hunt-api-stg-aedsyeswba-as.a.run.app/reward/getreward/`,
+            `${process.env.REACT_APP_BACKEND_URL}/reward/getreward/`,
             requestData,
             {
               headers: {

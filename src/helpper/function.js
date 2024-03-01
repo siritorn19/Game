@@ -11,5 +11,6 @@ export const AddSession = (user) => {
   export const RemoveSession = () => {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("bigpointId");
     sessionStorage.removeItem("accessTokenTime");
   };

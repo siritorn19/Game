@@ -3,20 +3,20 @@ import liff from "@line/liff";
 import queryString from "query-string";
 import Navbar from "../components/NavBar";
 import { AddSession } from "../helpper/function";
-import CircularProgress from '@mui/material/CircularProgress';
-
+import CircularProgress from "@mui/material/CircularProgress";
+import BigCLoading from "../components/Loading";
 
 const LoginLineLiff = () => {
   const [userName, setUserName] = useState("");
   const [userLineId, setUserLineId] = useState("");
   const [pictureUrl, setPictureUrl] = useState("");
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     const initializeLiff = async () => {
       try {
         await liff.init({
-        liffId: "1475405337-5oWAv137",
+          liffId: process.env.REACT_APP_LINE_LIFF_ID,
           withLoginOnExternalBrowser: true,
         });
 
@@ -27,7 +27,7 @@ const LoginLineLiff = () => {
         const qr = urlParams.get("qr");
         const m = urlParams.get("m");
         const p = urlParams.get("p");
-        console.log(qr, m, p)
+        console.log(qr, m, p);
 
         if (p) {
           redirectToMission(p, qr);
@@ -69,9 +69,13 @@ const LoginLineLiff = () => {
     }
   };
 
-
   if (loading) {
-    return <div><CircularProgress /></div>;
+    return (
+      <BigCLoading/>
+      /*<div>
+        <CircularProgress />
+      </div>*/
+    );
   }
 
   return (

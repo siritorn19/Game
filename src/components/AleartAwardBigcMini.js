@@ -6,13 +6,19 @@ import reward250 from "../imges/reward/icon-reward-250.png";
 import reward30 from "../imges/reward/icon-reward-30.png";
 import "./Alert.css";
 
-const PopupAward = ({ message, error }) => {
+const PopupAwardMini = ({ message, error }) => {
   const [open, setOpen] = React.useState(true);
   const userLineId = sessionStorage.getItem("userId");
   const bigpointId = sessionStorage.getItem("bigpointId");
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleToBCM = (e) => {
+    e.preventDefault();
+    setOpen(false);
+    window.location.href = `https://lin.ee/DJCievM`;
   };
 
   const handleToRegister = (e) => {
@@ -48,7 +54,7 @@ const PopupAward = ({ message, error }) => {
                 <CardMedia
                   className="box-dialog-img"
                   component="img"
-                  image={reward250}
+                  image={reward30}
                 />
               </Grid>
               <Grid item sm={12} xs={12}>
@@ -59,13 +65,17 @@ const PopupAward = ({ message, error }) => {
                 <br></br>
                 {bigpointId != "" ? (
                   <>
+                    <p className="popup-font">
+                      Big C Mini ขอเชิญคุณเป็นเพื่อน
+                      เพื่อจะได้ไม่พลาดส่วนลดและกิจกรรมของเรา
+                    </p>
+                    <br></br>
                     <p className="popup-font-small">
                       ขณะนี้ระบบกำลังดำเนินการส่งคูปองไปให้คูณโดยจะใช้ระยะเวลาประมาณ
-                      2-3 นาที หลังจากนั้น คุณสามารถตรวจสอบคูปองได้ที่เมนู My
-                      Coupon หรือ
-                      <a href={`${process.env.REACT_APP_BIGGAME_URL}/reward`}>
-                        คลิกที่นี่
-                      </a>
+                      2-3 นาที{" "}
+                    </p>
+                    <p className="popup-font-small">
+                      (คุณสามารถตรวจสอบคูปองได้ที่เมนู My Coupon)
                     </p>
                   </>
                 ) : (
@@ -84,9 +94,9 @@ const PopupAward = ({ message, error }) => {
                   {bigpointId != "" ? (
                     <Button
                       sx={{ color: "#fff" }}
-                      onClick={(e) => handleToMyReward(e)}
+                      onClick={(e) => handleToBCM(e)}
                     >
-                      ตกลง
+                      เป็นเพื่อนกับ Big C Mini
                     </Button>
                   ) : (
                     <Button
@@ -137,4 +147,4 @@ const ModalButton = styled(Button)(
 `
 );
 
-export default PopupAward;
+export default PopupAwardMini;
