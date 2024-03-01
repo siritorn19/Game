@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import liff from "@line/liff";
 import queryString from "query-string";
-import Navbar from "../components/NavBar";
 import { AddSession, RemoveSession } from "../helpper/function";
-import CircularProgress from "@mui/material/CircularProgress";
 import BigCLoading from "../components/Loading";
 
 const LoginLineLiff = () => {
-  const [userName, setUserName] = useState("");
-  const [userLineId, setUserLineId] = useState("");
-  const [pictureUrl, setPictureUrl] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,21 +15,6 @@ const LoginLineLiff = () => {
           withLoginOnExternalBrowser: true,
         });
 
-        // Parse the current URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const qr = urlParams.get("qr");
-        const m = urlParams.get("m");
-        const p = urlParams.get("p");
-        console.log(qr, m, p);
-
-        if (p) {
-          redirectToMission(p, qr);
-          return; // Stop execution since redirecting
-        }
-        if (qr) {
-          redirectToMission(qr);
-          return; // Stop execution since redirecting
-        }
         if (!liff.isLoggedIn()) {
           const redirectUri = constructRedirectUri();
           RemoveSession();
@@ -42,17 +22,34 @@ const LoginLineLiff = () => {
         } else {
           const profile = await liff.getProfile();
           console.log("User Profile:", profile);
-          await setUserName(profile.displayName);
-          await setUserLineId(profile.userId);
-          await setPictureUrl(profile.pictureUrl);
           const userId = sessionStorage.getItem("userId");
-          if(profile.userId != userId){
+          if (profile.userId != userId) {
             const isSession = await AddSession(profile);
             if (isSession === true) {
               window.location.reload();
             }
           }
+          
           await setLoading(false);
+          /* 
+          // Parse the current URL
+         const urlParams = new URLSearchParams(window.location.search);
+          const qr = urlParams.get("qr");
+          const m = urlParams.get("m");
+          const p = urlParams.get("p");
+          console.log(qr, m, p);
+
+         if (p) {
+          redirectToMission(p, qr);
+          return; // Stop execution since redirecting
+        }
+          if (qr) {
+            redirectToMission(qr);
+            return; // Stop execution since redirecting
+          } else {
+            redirectToMission("");
+          }
+          */
         }
       } catch (error) {
         console.error("Error initializing LIFF:", error.message);
@@ -66,8 +63,12 @@ const LoginLineLiff = () => {
     const currentUrl = window.location.href;
     return currentUrl;
   };
+  /*
+  const redirectToMission = (qr) => {
+    const locationUri = window.location.pathname;
 
-  const redirectToMission = (p, qr) => {
+    const locationUriName = locationUri.replaceAll('/','');
+
     let missionUrl;
     if (
       qr === "B2iSLO" ||
@@ -78,41 +79,38 @@ const LoginLineLiff = () => {
       qr === "aKvg6N" ||
       qr === "wMPC7B"
     ) {
-      missionUrl = `/missionhyp/?qr=${qr}`;
+      if (locationUriName !== "missionhyp") {
+        missionUrl = `/missionhyp/?qr=${qr}`;
+      }
     } else if (qr === "5XRMgB") {
-      missionUrl = `/mainmission/?qr=${qr}`;
+      if (locationUriName !== "mainmission") {
+        missionUrl = `/mainmission/?qr=${qr}`;
+      }
+      //window.location.reload();
+      //missionUrl = `/mainmission`;
     }
-    /*
+    
     if (p === "hyp") {
       missionUrl = `/missionhyp/?qr=${qr}`;
     } else if (p === "mini") {
       missionUrl = `/mainmission/?qr=${qr}`;
     }
-    */
+    
     //console.log(missionUrl);
     if (missionUrl) {
-     // window.location.href = missionUrl;
+      //window.location.href = missionUrl;
     }
-  };
+  };*/
 
   if (loading) {
     return (
-      <BigCLoading/>
+      <BigCLoading />
       /*<div>
         <CircularProgress />
       </div>*/
     );
   }
-
-  return (
-    <>
-      <Navbar
-        userName={userName}
-        userLineId={userLineId}
-        pictureUrl={pictureUrl}
-      />
-    </>
-  );
+  return <></>;
 };
 export default LoginLineLiff;
 

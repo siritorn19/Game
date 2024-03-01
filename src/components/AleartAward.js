@@ -18,13 +18,13 @@ const PopupAward = ({ message, error }) => {
   const handleToRegister = (e) => {
     e.preventDefault();
     setOpen(false);
-    window.location.href = `${process.env.REACT_APP_BIGGAME_LIFF_URL}?feature=register`;
+    window.location.href=`${process.env.REACT_APP_BIGGAME_LIFF_URL}?feature=register`;
   };
 
   const handleToMyReward = (e) => {
     e.preventDefault();
     setOpen(false);
-    window.location.href = `${process.env.REACT_APP_BIGGAME_URL}/reward`;
+    window.location.href=`${process.env.REACT_APP_BIGGAME_URL}/reward`;
   };
 
   return (

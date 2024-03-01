@@ -7,16 +7,41 @@ import queryString from "query-string";
 import BigCLoading from "../components/Loading";
 
 const Home = () => {
-  useEffect(() => {
-    const params = queryString.parse(window.location.search);
-    if (params.qr) {
-      redirectToMission(params.qr);
+  const userId = sessionStorage.getItem("userId");
+  //console.log(userId);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  //console.log(urlParams);
+
+  const qr = urlParams.get("qr");
+  const m = urlParams.get("m");
+  const p = urlParams.get("p");
+  console.log(qr, m, p);
+
+/*  useEffect(() => {
+    if (qr) {
+      redirectHomeToMission(qr);
+    } else {
+      redirectHomeToMission("");
     }
   }, []);
-
-  const redirectToMission = (qr) => {
-    let missionUrl;
-    if (
+*/
+useEffect(() => {
+  if(userId != null){
+    if (qr) {
+      console.log(`userId: ${qr}`);
+      redirectHomeToMission(qr);
+    } else {
+      redirectHomeToMission("");
+    }
+  }
+}, [userId]);
+  
+  let redirectHomeToMission = (qr) => {
+    console.log(`redirectToMission: ${qr}`);
+    //window.location.href = '/missionhyp?qr=wMPC7B';
+   let missionUrl;
+     if (
       qr === "B2iSLO" ||
       qr === "Yn75EO" ||
       qr === "13YZD3" ||
@@ -25,13 +50,13 @@ const Home = () => {
       qr === "aKvg6N" ||
       qr === "wMPC7B"
     ) {
-      missionUrl = `/missionhyp/?qr=${qr}`;
+      window.location.href=`/missionhyp?qr=${qr}`;
     } else if (qr === "5XRMgB") {
-      missionUrl = `/mainmission/?qr=${qr}`;
+      window.location.href=`/mainmission?qr=${qr}`;
+    } else {
+      window.location.href="/mainmission";
     }
-    else{
-      missionUrl = `/mainmission`;
-    }
+    console.log(`missionUrl : ${missionUrl}`);
     /*
     if (p === "hyp") {
       missionUrl = "/missionhyp";
@@ -39,12 +64,10 @@ const Home = () => {
       missionUrl = "/missionbcm";
     }*/
     if (missionUrl) {
-      window.location.href = missionUrl;
+      //window.location.href=missionUrl;
     }
   };
-  return (
-    <BigCLoading/>
-  );
+  return <BigCLoading />;
 };
 
 export default Home;

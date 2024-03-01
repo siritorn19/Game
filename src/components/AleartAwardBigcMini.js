@@ -18,19 +18,19 @@ const PopupAwardMini = ({ message, error }) => {
   const handleToBCM = (e) => {
     e.preventDefault();
     setOpen(false);
-    window.location.href = `https://lin.ee/DJCievM`;
+    window.location.href=`https://lin.ee/DJCievM`;
   };
 
   const handleToRegister = (e) => {
     e.preventDefault();
     setOpen(false);
-    window.location.href = `${process.env.REACT_APP_BIGGAME_LIFF_URL}?feature=register`;
+    window.location.href=`${process.env.REACT_APP_BIGGAME_LIFF_URL}?feature=register`;
   };
 
   const handleToMyReward = (e) => {
     e.preventDefault();
     setOpen(false);
-    window.location.href = `${process.env.REACT_APP_BIGGAME_URL}/reward`;
+    window.location.href=`${process.env.REACT_APP_BIGGAME_URL}/reward`;
   };
 
   return (

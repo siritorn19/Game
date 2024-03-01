@@ -23,9 +23,11 @@ export default function App() {
         <Router>
           <LoginLineLiff />
           <Switch>
-            <Route exact path="/" component={MainMission} />
+            <Route exact path="/" component={Home} />
             <Route path="/mainmission" component={MainMission} />
             <Route path="/missionhyp" component={MissionHYP} />
+            <Route path="/mainmission/*" component={MainMission} />
+            <Route path="/missionhyp/*" component={MissionHYP} />
             <Route path="/missionbcm" component={MissionBCM} />
             <Route path="/home" component={Home} />
             <Route path="/scanqr" component={ScanQR} />

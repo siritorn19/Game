@@ -15,7 +15,7 @@ import hyp from "../imges/1hyp.jpg";
 import bcm from "../imges/2mini.jpg";
 import mainBg from "../imges/main-bg.jpg";
 import cam from "../imges/cam.png";
-import BigCLoading from "../components/Loading";
+import Layout from "./Layout";
 
 import "./MainMission.css";
 
@@ -33,7 +33,7 @@ const MainMission = () => {
   const [rewardFetched, setRewardFetched] = useState(false);
   const history = useHistory();
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -68,7 +68,7 @@ const MainMission = () => {
       }
     };
     fetchData();
-  }, [userId]);
+  }, [userId]);*/
 
   // scan mini
   const params = queryString.parse(window.location.search);
@@ -97,7 +97,17 @@ const MainMission = () => {
       if (missionResponse.data.status === "success") {
         setMissionData(missionResponse.data.data);
         setProcessData(missionResponse.data);
+
+        const countHyp = missionResponse.data.data.filter(
+          (mission) => mission.check_point_type === 1
+        ).length;
+        const countMini = missionResponse.data.data.filter(
+          (mission) => mission.check_point_type === 2
+        ).length;
+        setStageCount(countHyp);
+        setStage8Count(countMini);
       }
+      
 
       if (qr) {
         const checkinResponse = await axios.post(
@@ -113,10 +123,13 @@ const MainMission = () => {
           }
         );
         console.log("post: ", checkinResponse);
+        setAward(null);
+        setError(null);
+
         if (checkinResponse.data.status === "error") {
           setError("ขออภัย! คุณเคยแสกนจุดนี้แล้ว");
         } else if (
-          checkinResponse.data.status === "success" ||
+          checkinResponse.data.status === "success" &&
           checkinResponse.data.message === "get reward for bigC mini"
         ) {
           if (!rewardFetched) {
@@ -164,10 +177,10 @@ const MainMission = () => {
             console.log("Response data:", response.data);
             if (response.data.status === "success") {
               setRewardData(response.data);
-              setTimeout(() => {
+              //setTimeout(() => {
                 console.log("response message:", response.data.message); // Log error message
                 setAward("ส่วนลดซื้อสินค้ามูลค่า 30 บาท");
-              }, 5000);
+              //}, 5000);
             } else {
               // handle error
             }
@@ -181,11 +194,8 @@ const MainMission = () => {
     }
   };
 
-  if (userId === null) {
-    return <BigCLoading />;
-  }
-
   return (
+    <Layout>
     <Grid sx={{ m: 1 }}>
       <Grid item xs={12} sx={{ mb: 2, mt: 2 }}>
         <Typography fontSize={22} color="#ed1c24" align="center">
@@ -223,7 +233,7 @@ const MainMission = () => {
           </Box>
           <Box className="Main-Hunt-TopLayer-Box">
             {/* HYP */}
-            <Link to="./MissionHYP" style={{ textDecoration: "none" }}>
+            <Link to="/missionhyp" style={{ textDecoration: "none" }}>
               <Box className="Main-Hunt-HYP-Box">
                 <Box className="Main-BiggyHead-Box">
                   {stageCount >= 6 ? <img src={BiggyHead} alt="BigC" /> : ""}
@@ -254,7 +264,7 @@ const MainMission = () => {
             </Link>
 
             {/* BCM */}
-            <Link to="./scanqr" style={{ textDecoration: "none" }}>
+            <Link to="/scanqr" style={{ textDecoration: "none" }}>
               <Box className="Main-Hunt-MINI-Box">
                 {[1].map((stageNumber) => {
                   const mission = missionData.find(
@@ -307,10 +317,8 @@ const MainMission = () => {
         {/*{award && <PopupAward message={award} />}*/}
         {award && <PopupAwardMini message={award} />}
       </div>
-
-      {/* วิธีเล่น */}
-      <HowtoPlay />
     </Grid>
+    </Layout>
   );
 };
 

@@ -1,0 +1,92 @@
+.register-box-game {
+  position: relative;
+  max-width: 576px;
+  margin: 0 auto;
+}
+.register-box-len {
+  margin-top: 3px;
+  width: 100%;
+  height: 50px;
+  text-align: right;
+}
+.register-btn-len>button {
+  width: 60px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  /*background-color: #FF484E ;*/
+  border: 3px solid #fff;
+  margin: 0 auto;
+  background: rgba(178, 210, 53, 1)
+}
+.register-btn-len>button:hover {
+  width: 60px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  /*background-color: #FF484E ;*/
+  border: 3px solid #fff;
+  margin: 0 auto;
+  background: rgba(178, 210, 53, 1)
+}
+
+.register-btn-len>button.radiusLeft{
+  border-radius: 18px 3px 3px 18px;
+  position: absolute;
+  margin-left: -60px;
+}
+.register-btn-len>button.radiusRight{
+  border-radius: 3px 18px 18px 3px;
+}
+
+.register-btn-len>button.active {
+  background: #CCC;
+}
+
+.register-box-reward {
+  width: 100%;
+  height: 50px;
+}
+
+.register-btn-reward {
+  width: 180px;
+  left: 0;
+  position: absolute;
+}
+.register-btn-reward>button {
+  width: 100%;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  /*background-color: #FF484E ;*/
+  border-radius: 25px;
+  border: 3px solid #fff;
+  margin: 0 auto;
+  background: #FF484E;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(#FF484E, #B90005);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#FF484E, #B90005);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#FF484E, #B90005);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#FF484E, #B90005);
+  /* Standard syntax */
+}
+
+.register-btn-reward>button:hover {
+  background: #B90005;
+  background: -webkit-linear-gradient(#B90005, #B90005);
+  background: -o-linear-gradient(#B90005, #B90005);
+  background: -moz-linear-gradient(#B90005, #B90005);
+  background: linear-gradient(#B90005, #B90005);
+}
+
+.register-box{
+  background-color: #fff;
+}
+
+.register-img-game {
+  border-radius: 1.5rem;
+}
+

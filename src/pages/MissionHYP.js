@@ -19,6 +19,7 @@ import BiggyHead from "../imges/BiggyHead.png";
 import HYPItem from "../imges/HYP-Item.jpg";
 import WalkAnimation from "../helpper/Animation_1.json";
 import BigCLoading from "../components/Loading";
+import Layout from "./Layout";
 
 import "./MissionHYP.css";
 
@@ -38,6 +39,9 @@ const MissionHYP = () => {
 
   const params = queryString.parse(window.location.search);
   const qr = params.qr;
+
+  //const currentUrl = window.location.pathname;
+  //console.log(currentUrl);
 
   useEffect(() => {
     fetchData();
@@ -85,8 +89,11 @@ const MissionHYP = () => {
           }
         );
         console.log("post: ", checkinResponse);
+        setAward(null);
+        setError(null);
+
         if (checkinResponse.data.status === "error") {
-          setError("คุณได้แสกนจุดนี้แล้ว");
+          setError("ขออภัย! คุณเคยแสกนจุดนี้แล้ว");
           setPopUpReload('');
 
         } else if (checkinResponse.data.status === "success") {
@@ -98,7 +105,7 @@ const MissionHYP = () => {
               setRewardFetched(true);
             }
           } else if (checkinResponse.data.message === "success") {
-            setError("ยินดีด้วย<br/>คุณสะสมได้อีก 1 จุดแล้ว");
+            setError("ยินดีด้วย<br/>คุณสะสมได้เพิ่มอีก 1 จุดแล้ว");
             setPopUpReload('HYP');
             //window.location.reload();
           } else {
@@ -120,7 +127,7 @@ const MissionHYP = () => {
           return;
         }
         const bigpointId =
-          missionData.bigpoint_id === null ? "null" : missionData.bigpoint_id;
+        missionData.bigpoint_id === null ? "null" : missionData.bigpoint_id;
         const requestData = {
           userId: userId,
           rewardType: 1,
@@ -138,14 +145,14 @@ const MissionHYP = () => {
               },
             }
           )
-          .then((response) => {
+          .then( async (response) => {
             console.log("Response data:", response.data);
             if (response.data.status === "success") {
-              setRewardData(response.data);
-              setTimeout(() => {
+              await setRewardData(response.data);
+              //setTimeout(() => {
                 console.log("response message:", response.data.message); // Log error message
-                setAward("ส่วนลดซื้อสินค้ามูลค่า 250 บาท จำนวน 2 คูปอง");
-              }, 5000);
+                await setAward("ส่วนลดซื้อสินค้ามูลค่า 250 บาท จำนวน 2 คูปอง");
+              //}, 5000);
             } else {
               // handle error
             }
@@ -158,7 +165,7 @@ const MissionHYP = () => {
       console.error("Error fetching data:", error);
     }
   };
-
+/*
   const imageUrls = {
     1: Hunt01,
     2: Hunt02,
@@ -168,19 +175,13 @@ const MissionHYP = () => {
     6: Hunt06,
     7: Hunt07,
   };
-
+*/
   const navigateToMainMission = () => {
     history.push("/mainmission");
   };
 
-  if(userId === null){    
-    return (
-      <BigCLoading/>
-    );
-  }
-
   return (
-    <div>
+    <Layout>
       <Grid sx={{ m: 1 }}>
         <IconButton onClick={navigateToMainMission}>
           <ArrowBackIosIcon sx={{ stroke: "#ed1c24", strokeWidth: 2 }} />
@@ -269,14 +270,9 @@ const MissionHYP = () => {
           </Box>
         </Grid>
         {error && <PopupQRReuse message={error} page={popUpReload}/>}
-        {award && <PopupAward message={award} />}
+        {award && <PopupAward message={award} />}       
         </Grid>
-
-      {/* วิธีเล่น */}
-      <Grid sx={{ m: 2 }}>
-        <HowtoPlay />
-      </Grid>
-    </div>
+    </Layout>
   );
 };
 

@@ -32,9 +32,7 @@ const Navbar = ({ userName, pictureUrl }) => {
           },
         }
       );
-      console.log(`Navbar fetchUserData :${response.data}`);
-      console.log(response);
-      console.log(`-----------------`);
+
       if (response.status === 200) {
         const data = response.data;
         if (data.status === "success") {
@@ -56,8 +54,7 @@ const Navbar = ({ userName, pictureUrl }) => {
   };
 
   useEffect(() => {
-    console.log(`Navbar useEffect :${userLineId}`);
-
+    //console.log(`Navbar useEffect :${userLineId}`);
     if (userLineId !== "" && userLineId !== null) {
       fetchUserData();
     }
@@ -66,15 +63,6 @@ const Navbar = ({ userName, pictureUrl }) => {
   if (error) {
     return <div>Error: {error}</div>;
   }
-
-  console.log(`Navbar userLineId :${userLineId}`);
-
-  /*if (!userLineId) {
-    return (
-      //<BigCLoading/>
-     <div><CircularProgress /></div>
-    );
-  }*/
 
   return (
     <>

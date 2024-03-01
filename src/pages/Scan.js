@@ -3,6 +3,7 @@ import QrReader from "modern-react-qr-reader";
 import { Grid, Typography, Box, IconButton, Link } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import HowtoPlay from "../components/HowtoPlay";
+import Layout from "./Layout";
 
 class ScanQR extends Component {
   constructor(props) {
@@ -53,7 +54,7 @@ class ScanQR extends Component {
         redirectPage = "missionbcm";
       }
       if (redirectPage) {
-        window.location.href = `/${redirectPage}?qr=${params.qr}`;
+        window.location.href=`/${redirectPage}?qr=${params.qr}`;
       }
       //console.log(window.location.href);
     }
@@ -77,17 +78,13 @@ class ScanQR extends Component {
     window.history.go(-1);
     return false;
     //navigate(-1);
-    //window.location.href = `/${lang}/lobby`;
+    //window.location.href=`/${lang}/lobby`;
   };
 
   render() {
     return (
-      <>
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-        >
+      <Layout>
+        <Grid container spacing={0} direction="column">
           <Grid sx={{ m: 1 }}>
             <IconButton onClick={this.handleBack}>
               <ArrowBackIosIcon sx={{ stroke: "#ed1c24", strokeWidth: 2 }} />
@@ -118,11 +115,7 @@ class ScanQR extends Component {
             style={{ width: "100%", height: "100%" }}
           />
         </Grid>
-        <Grid sx={{ m: 2 }}>
-        <HowtoPlay />
-      </Grid>
-
-      </>
+      </Layout>
     );
   }
 }
