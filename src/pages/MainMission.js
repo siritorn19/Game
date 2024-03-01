@@ -120,9 +120,9 @@ const MainMission = () => {
             setRewardFetched(true);
           }
           // setAward("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
-          //   window.location.reload();
+          // window.location.reload();
         } else {
-          console.log("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
+          //console.log("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
         }
       }
     } catch (error) {
@@ -162,7 +162,7 @@ const MainMission = () => {
               setRewardData(response.data);
               setTimeout(() => {
                 console.log("response message:", response.data.message); // Log error message
-                setAward("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
+                setAward("ส่วนลดซื้อสินค้ามูลค่า 30 บาท");
               }, 5000);
             } else {
               // handle error
