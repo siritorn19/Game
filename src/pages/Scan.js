@@ -55,7 +55,7 @@ class ScanQR extends Component {
       if (redirectPage) {
         window.location.href = `/${redirectPage}?qr=${params.qr}`;
       }
-      console.log(window.location.href);
+      //console.log(window.location.href);
     }
   };
 

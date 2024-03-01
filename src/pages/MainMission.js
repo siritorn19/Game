@@ -15,6 +15,8 @@ import hyp from "../imges/1hyp.jpg";
 import bcm from "../imges/2mini.jpg";
 import mainBg from "../imges/main-bg.jpg";
 import cam from "../imges/cam.png";
+import BigCLoading from "../components/Loading";
+
 import "./MainMission.css";
 
 const MainMission = () => {
@@ -73,7 +75,9 @@ const MainMission = () => {
   const qr = params.qr;
 
   useEffect(() => {
-    fetchData();
+    if (userId != null) {
+      fetchData();
+    }
     /*if (setMissionData || qr) {
       fetchReward(userId);
     }*/
@@ -110,7 +114,7 @@ const MainMission = () => {
         );
         console.log("post: ", checkinResponse);
         if (checkinResponse.data.status === "error") {
-          setError("คุณได้แสกนจุดนี้แล้ว");
+          setError("ขออภัย! คุณเคยแสกนจุดนี้แล้ว");
         } else if (
           checkinResponse.data.status === "success" ||
           checkinResponse.data.message === "get reward for bigC mini"
@@ -176,6 +180,10 @@ const MainMission = () => {
       console.log("Error fetching data:", error);
     }
   };
+
+  if (userId === null) {
+    return <BigCLoading />;
+  }
 
   return (
     <Grid sx={{ m: 1 }}>
@@ -295,7 +303,7 @@ const MainMission = () => {
       </Grid>
 
       <div style={{ width: "100%" }}>
-        {error && <PopupQRReuse message={error} />}
+        {error && <PopupQRReuse message={error} page="Main"/>}
         {/*{award && <PopupAward message={award} />}*/}
         {award && <PopupAwardMini message={award} />}
       </div>

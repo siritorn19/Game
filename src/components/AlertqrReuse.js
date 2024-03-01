@@ -1,20 +1,20 @@
 import * as React from "react";
 import { styled, css } from "@mui/system";
 import { Button } from "@mui/base/Button";
-import {
-  Dialog,
-  DialogContent,
-  Grid,
-  CardMedia,
-  Box,
-} from "@mui/material";
+import { Dialog, DialogContent, Grid, CardMedia, Box } from "@mui/material";
 import BiggyHead from "../imges/BiggyHead.png";
 import "./Alert.css";
 
-const PopupQRReuse = ({ message }) => {
+const PopupQRReuse = ({ message, page}) => {
   const [open, setOpen] = React.useState(true);
 
   const handleClose = () => {
+    if(page === 'Main'){
+      window.location.href="/mainmission";
+    }
+    else if(page === 'HYP'){
+      window.location.href="/missionhyp";
+    }
     setOpen(false);
   };
 

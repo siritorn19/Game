@@ -63,7 +63,7 @@ const PopupAwardMini = ({ message, error }) => {
                 <b className="popup-font-red">{message}</b>
                 <br></br>
                 <br></br>
-                {bigpointId != "" ? (
+                {bigpointId != null ? (
                   <>
                     <p className="popup-font">
                       Big C Mini ขอเชิญคุณเป็นเพื่อน
@@ -90,23 +90,25 @@ const PopupAwardMini = ({ message, error }) => {
                 )}
               </Grid>
               <Grid item sm={12} xs={12}>
-                <Box className="btn-dialog">
-                  {bigpointId != "" ? (
+                {bigpointId != null ? (
+                  <Box className="btn-dialog">
                     <Button
                       sx={{ color: "#fff" }}
                       onClick={(e) => handleToBCM(e)}
                     >
-                      เป็นเพื่อนกับ Big C Mini
+                      เพิ่มเพื่อน Big C Mini
                     </Button>
-                  ) : (
+                  </Box>
+                ) : (
+                  <Box className="btn-dialog-green">
                     <Button
                       sx={{ color: "#fff" }}
                       onClick={(e) => handleToRegister(e)}
                     >
                       สมัครสมาชิก
                     </Button>
-                  )}
-                </Box>
+                  </Box>
+                )}
               </Grid>
             </Grid>
           </DialogContent>

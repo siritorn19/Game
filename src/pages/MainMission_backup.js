@@ -324,7 +324,7 @@ const MainMission = () => {
           })}
         </Grid>
 
-        {error && <PopupQRReuse message={error} />}
+        {error && <PopupQRReuse message={error} toPage="" />}
         {award && <PopupAward message={award} />}
       </div>
 

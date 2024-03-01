@@ -27,7 +27,6 @@ export default function App() {
             <Route path="/mainmission" component={MainMission} />
             <Route path="/missionhyp" component={MissionHYP} />
             <Route path="/missionbcm" component={MissionBCM} />
-            <Route path="/mainmission" component={MainMission} />
             <Route path="/home" component={Home} />
             <Route path="/scanqr" component={ScanQR} />
             <Route path="*" render={() => <Redirect to="/" />} />

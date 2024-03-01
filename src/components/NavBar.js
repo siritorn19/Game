@@ -56,7 +56,7 @@ const Navbar = ({ userName, pictureUrl }) => {
   };
 
   useEffect(() => {
-    console.log(`Navbar userLineId :${userLineId}`);
+    console.log(`Navbar useEffect :${userLineId}`);
 
     if (userLineId !== "" && userLineId !== null) {
       fetchUserData();
@@ -67,16 +67,18 @@ const Navbar = ({ userName, pictureUrl }) => {
     return <div>Error: {error}</div>;
   }
 
-  /*if (!userData) {
+  console.log(`Navbar userLineId :${userLineId}`);
+
+  /*if (!userLineId) {
     return (
       //<BigCLoading/>
      <div><CircularProgress /></div>
     );
-  }
-*/
+  }*/
+
   return (
     <>
-      <AppBar position="static" sx={{ background: "#ed1c24" }}>
+      <AppBar position="static" sx={{ background: "#ed1c24", minWidth: "320px" }}>
         <PopupAward error={error} rewardData={rewardData} />
         <Grid
           container

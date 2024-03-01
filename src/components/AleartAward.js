@@ -57,7 +57,7 @@ const PopupAward = ({ message, error }) => {
                 <b className="popup-font-red">{message}</b>
                 <br></br>
                 <br></br>
-                {bigpointId != "" ? (
+                {bigpointId != null ? (
                   <>
                     <p className="popup-font-small">
                       ขณะนี้ระบบกำลังดำเนินการส่งคูปองไปให้คูณโดยจะใช้ระยะเวลาประมาณ
@@ -80,23 +80,25 @@ const PopupAward = ({ message, error }) => {
                 )}
               </Grid>
               <Grid item sm={12} xs={12}>
-                <Box className="btn-dialog">
-                  {bigpointId != "" ? (
+                {bigpointId != null ? (
+                  <Box className="btn-dialog">
                     <Button
                       sx={{ color: "#fff" }}
                       onClick={(e) => handleToMyReward(e)}
                     >
                       ตกลง
                     </Button>
-                  ) : (
+                  </Box>
+                ) : (
+                  <Box className="btn-dialog-green">
                     <Button
                       sx={{ color: "#fff" }}
                       onClick={(e) => handleToRegister(e)}
                     >
                       สมัครสมาชิก
                     </Button>
-                  )}
-                </Box>
+                  </Box>
+                )}
               </Grid>
             </Grid>
           </DialogContent>

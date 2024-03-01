@@ -43,6 +43,37 @@ width: 150px;
     background: -moz-linear-gradient(#B90005, #B90005);
     background: linear-gradient(#B90005, #B90005);
 }
+
+.alert-dialog .btn-dialog-green>button {
+    width: 100%;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    /*background-color: #FF484E ;*/
+    border-radius: 25px;
+    padding: 13px;
+    border: 3px solid #fff;
+    margin: 0 auto;
+    background: #93d701;
+    /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#93d701, #94d600);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#93d701, #94d600);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#93d701, #94d600);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#93d701, #94d600);
+    /* Standard syntax */
+}
+
+.alert-dialog .btn-dialog-green>button:hover {
+    background: #93d701;
+    background: -webkit-linear-gradient(#93d701, #94d600);
+    background: -o-linear-gradient(#93d701, #94d600);
+    background: -moz-linear-gradient(#93d701, #94d600);
+    background: linear-gradient(#93d701, #94d600);
+}
+
 .popup-font-red{
     color: red;
 }

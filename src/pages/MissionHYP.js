@@ -18,6 +18,7 @@ import Hunt07 from "../imges/hyp/Biggy-Treasure-Hunt-07.jpg";
 import BiggyHead from "../imges/BiggyHead.png";
 import HYPItem from "../imges/HYP-Item.jpg";
 import WalkAnimation from "../helpper/Animation_1.json";
+import BigCLoading from "../components/Loading";
 
 import "./MissionHYP.css";
 
@@ -30,6 +31,9 @@ const MissionHYP = () => {
   const userId = sessionStorage.getItem("userId");
   const [rewardData, setRewardData] = useState(null);
   const [rewardFetched, setRewardFetched] = useState(false);
+  const [popUpReload, setPopUpReload] = useState('');
+
+  
   const history = useHistory();
 
   const params = queryString.parse(window.location.search);
@@ -82,7 +86,9 @@ const MissionHYP = () => {
         );
         console.log("post: ", checkinResponse);
         if (checkinResponse.data.status === "error") {
-          setError("คุณได้แสกนเรียบร้อยแล้ว");
+          setError("คุณได้แสกนจุดนี้แล้ว");
+          setPopUpReload('');
+
         } else if (checkinResponse.data.status === "success") {
           if (checkinResponse.data.message === "get reward") {
             // setAward("ยินดีด้วย คุณรับรางวัลแล้ว");
@@ -92,8 +98,9 @@ const MissionHYP = () => {
               setRewardFetched(true);
             }
           } else if (checkinResponse.data.message === "success") {
-            setError("ยินดีด้วย คุณสะสมได้อีก 1 จุดแล้ว");
-            window.location.reload();
+            setError("ยินดีด้วย<br/>คุณสะสมได้อีก 1 จุดแล้ว");
+            setPopUpReload('HYP');
+            //window.location.reload();
           } else {
             console.log("Check-in successful");
           }
@@ -165,6 +172,12 @@ const MissionHYP = () => {
   const navigateToMainMission = () => {
     history.push("/mainmission");
   };
+
+  if(userId === null){    
+    return (
+      <BigCLoading/>
+    );
+  }
 
   return (
     <div>
@@ -255,7 +268,7 @@ const MissionHYP = () => {
             </Grid>
           </Box>
         </Grid>
-        {error && <PopupQRReuse message={error} />}
+        {error && <PopupQRReuse message={error} page={popUpReload}/>}
         {award && <PopupAward message={award} />}
         </Grid>
 
