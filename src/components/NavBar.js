@@ -18,13 +18,12 @@ const Navbar = ({ userName, pictureUrl }) => {
   const [userData, setUserData] = useState(null);
   const [rewardData, setRewardData] = useState(null);
   const [error, setError] = useState(null);
-  const [bigpointId,setBigpointId] = useState('');
+  const [bigpointId, setBigpointId] = useState("");
   // const [lineId, setUserLineId] = useState(userLineId);
   const userLineId = sessionStorage.getItem("userId");
 
   const fetchUserData = async () => {
     try {
-       console.log(`${process.env.REACT_APP_BACKEND_URL}/user/checkuser/${userLineId}`);
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/user/checkuser/${userLineId}`,
         {
@@ -33,13 +32,17 @@ const Navbar = ({ userName, pictureUrl }) => {
           },
         }
       );
-      //console.log(response.data);
+      console.log(`Navbar fetchUserData :${response.data}`);
+      console.log(response);
+      console.log(`-----------------`);
       if (response.status === 200) {
         const data = response.data;
         if (data.status === "success") {
           setUserData(data.data);
-          setBigpointId(userData.bigpoint_id);
-          sessionStorage.setItem("bigpointId", data.data.bigpoint_id);
+          if (data.data.bigpoint_id != null) {
+            setBigpointId(data.data.bigpoint_id);
+            sessionStorage.setItem("bigpointId", data.data.bigpoint_id);
+          }
         } else {
           setError(data.message);
         }
@@ -47,17 +50,18 @@ const Navbar = ({ userName, pictureUrl }) => {
         setError("Failed to fetch data from the API");
       }
     } catch (error) {
+      //setError(error);
       setError("An error occurred while fetching data");
     }
   };
 
   useEffect(() => {
-    if (userLineId !== "") {
+    console.log(`Navbar userLineId :${userLineId}`);
+
+    if (userLineId !== "" && userLineId !== null) {
       fetchUserData();
-    } 
+    }
   }, []);
-
-
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -73,7 +77,7 @@ const Navbar = ({ userName, pictureUrl }) => {
   return (
     <>
       <AppBar position="static" sx={{ background: "#ed1c24" }}>
-      <PopupAward error={error} rewardData={rewardData} />
+        <PopupAward error={error} rewardData={rewardData} />
         <Grid
           container
           spacing={0}
@@ -92,7 +96,7 @@ const Navbar = ({ userName, pictureUrl }) => {
             </div>
           )}  */}
 
-      {/*   {rewardData && (
+          {/*   {rewardData && (
             <div>
               <p>Status: {rewardData.status}</p>
               <p>Message: {rewardData.message}</p>
@@ -132,7 +136,7 @@ const Navbar = ({ userName, pictureUrl }) => {
                       >
                         {userName}
                         <br />
-                        สมาชิก : {bigpointId != ''?bigpointId:'Guest'}
+                        สมาชิก : {bigpointId != "" ? bigpointId : "Guest"}
                         {/* {userLineId} */}
                       </Typography>
                     </>

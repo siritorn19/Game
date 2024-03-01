@@ -4,6 +4,9 @@
     margin: 0 auto;
     z-index: 0;
 }
+.HYP-Hunt-Grid-Item{
+    z-index: 3;
+}
 .HYP-Hunt-Item{
     width: 100%;
     height: 133px;
@@ -11,6 +14,15 @@
 .HYP-Hunt-BiggyHead{
     margin: 0 auto;
     width: 120px;
+}
+.HYP-Hunt-animate-Box{
+    height: 200px;
+    position: absolute;
+    width: 400px;
+    z-index: 1;
+    margin-top: -60px;
+    display: flex;
+    overflow: hidden;
 }
 
 @media (max-width:400px) {
@@ -24,4 +36,8 @@
     .HYP-Hunt-BiggyHead{
         width: 90px;
     }
+    .HYP-Hunt-animate-Box{
+        width: 300px;
+        margin-top: -45px;
+    }    
 }

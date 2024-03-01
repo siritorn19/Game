@@ -74,9 +74,9 @@ const MainMission = () => {
 
   useEffect(() => {
     fetchData();
-    if (setMissionData || qr) {
+    /*if (setMissionData || qr) {
       fetchReward(userId);
-    }
+    }*/
   }, []);
 
   const fetchData = async () => {
@@ -108,7 +108,7 @@ const MainMission = () => {
             },
           }
         );
-        // console.log("post: ", checkinResponse);
+        console.log("post: ", checkinResponse);
         if (checkinResponse.data.status === "error") {
           setError("คุณได้แสกนจุดนี้แล้ว");
         } else if (

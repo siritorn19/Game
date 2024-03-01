@@ -4,6 +4,7 @@ import { Grid, Typography, Box, IconButton, Link } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import queryString from "query-string";
 import { useHistory } from "react-router-dom";
+import Lottie from "lottie-react";
 import HowtoPlay from "../components/HowtoPlay";
 import PopupQRReuse from "../components/AlertqrReuse";
 import PopupAward from "../components/AleartAward";
@@ -16,6 +17,7 @@ import Hunt06 from "../imges/hyp/Biggy-Treasure-Hunt-06.jpg";
 import Hunt07 from "../imges/hyp/Biggy-Treasure-Hunt-07.jpg";
 import BiggyHead from "../imges/BiggyHead.png";
 import HYPItem from "../imges/HYP-Item.jpg";
+import WalkAnimation from "../helpper/Animation_1.json";
 
 import "./MissionHYP.css";
 
@@ -35,9 +37,9 @@ const MissionHYP = () => {
 
   useEffect(() => {
     fetchData();
-    if (setMissionData || qr) {
+    /*if (setMissionData || qr) {
       fetchReward(userId);
-    }
+    }*/
   }, []);
 
   const fetchData = async () => {
@@ -199,6 +201,20 @@ const MissionHYP = () => {
               backgroundSize: "cover",
             }}
           >
+            {/* animate */}
+          <Box className="HYP-Hunt-animate-Box">
+            <Lottie
+              animationData={WalkAnimation}
+              loop={true}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                pointerEvents: "none",
+              }}
+            />
+          </Box>
             <Grid container>
               {[1, 2, 3, 4, 5, 6, 7].map((stageNumber) => {
                 const mission = missionData.find(
@@ -206,7 +222,7 @@ const MissionHYP = () => {
                     mission.check_point_name === `stage ${stageNumber}`
                 );
                 return (
-                  <Grid item xs={stageNumber === 1 ? 12 : 4} key={stageNumber}>
+                  <Grid item xs={stageNumber === 1 ? 12 : 4} key={stageNumber} className="HYP-Hunt-Grid-Item">
                     <a href="/scanqr">
                       <div className="HYP-Hunt-Item">
                         {mission ? (
