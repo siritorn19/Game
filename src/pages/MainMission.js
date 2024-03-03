@@ -20,10 +20,12 @@ import Layout from "./Layout";
 import "./MainMission.css";
 
 const MainMission = () => {
+  const userId = sessionStorage.getItem("userId");
+  const bigpointId = sessionStorage.getItem("bigpointId");
+
   const [processData, setProcessData] = useState([]);
   const [stageCount, setStageCount] = useState(0);
   const [stage8Count, setStage8Count] = useState(0);
-  const userId = sessionStorage.getItem("userId");
   const [missionData, setMissionData] = useState([]);
   const [status, setStatus] = useState("");
   const [error, setError] = useState(null);
@@ -149,13 +151,13 @@ const MainMission = () => {
 
   const fetchReward = async () => {
     try {
-      await fetchData().then(() => {
-        if (!missionData) {
+      //await fetchData().then(() => {
+        /*if (!missionData) {
           console.log("bigpointId is null");
           return;
         }
-        const bigpointId =
-          missionData.bigpoint_id === null ? "null" : missionData.bigpoint_id;
+        const bigpointId = missionData.bigpoint_id === null ? "null" : missionData.bigpoint_id;
+        */
         const requestData = {
           userId: userId,
           rewardType: 2,
@@ -188,7 +190,7 @@ const MainMission = () => {
           .catch((error) => {
             console.log("Error fetching data:", error);
           });
-      });
+      //});
     } catch (error) {
       console.log("Error fetching data:", error);
     }

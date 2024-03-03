@@ -24,12 +24,14 @@ import Layout from "./Layout";
 import "./MissionHYP.css";
 
 const MissionHYP = () => {
+  const userId = sessionStorage.getItem("userId");
+  const bigpointId = sessionStorage.getItem("bigpointId");
+
   const [missionData, setMissionData] = useState([]);
   const [status, setStatus] = useState("");
   const [processData, setProcessData] = useState([]);
   const [error, setError] = useState(null);
   const [award, setAward] = useState(null);
-  const userId = sessionStorage.getItem("userId");
   const [rewardData, setRewardData] = useState(null);
   const [rewardFetched, setRewardFetched] = useState(false);
   const [popUpReload, setPopUpReload] = useState('');
@@ -121,13 +123,14 @@ const MissionHYP = () => {
   //reward
   const fetchReward = async () => {
     try {
-      await fetchData().then(() => {
-        if (!missionData) {
+      //await fetchData().then(() => {
+        /*if (!missionData) {
           console.log("bigpointId is null");
           return;
         }
         const bigpointId =
         missionData.bigpoint_id === null ? "null" : missionData.bigpoint_id;
+        */
         const requestData = {
           userId: userId,
           rewardType: 1,
@@ -160,7 +163,7 @@ const MissionHYP = () => {
           .catch((error) => {
             console.error("Error fetching data:", error);
           });
-      });
+     // });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
