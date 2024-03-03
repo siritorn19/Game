@@ -18,18 +18,27 @@ const LoginLineLiff = () => {
         if (!liff.isLoggedIn()) {
           const redirectUri = constructRedirectUri();
           RemoveSession();
+          sessionStorage.setItem("redirectUri", redirectUri);
           liff.login();
         } else {
           const profile = await liff.getProfile();
           console.log("User Profile:", profile);
           const userId = sessionStorage.getItem("userId");
+
+          const sessionRedirectUri = sessionStorage.getItem("redirectUri");
+          if (sessionRedirectUri != null) {
+            await sessionStorage.removeItem("redirectUri");
+            window.location.href=sessionRedirectUri;
+            return false;
+          }
+
           if (profile.userId != userId) {
             const isSession = await AddSession(profile);
             if (isSession === true) {
               window.location.reload();
             }
           }
-          
+
           await setLoading(false);
           /* 
           // Parse the current URL
