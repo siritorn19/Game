@@ -96,7 +96,7 @@ const PopupAwardMini = ({ message, error }) => {
                       sx={{ color: "#fff" }}
                       onClick={(e) => handleToBCM(e)}
                     >
-                      เพิ่มเพื่อน Big C Mini
+                      เพิ่มเพื่อน<br/>Big C Mini
                     </Button>
                   </Box>
                 ) : (

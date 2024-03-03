@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import Lottie from "lottie-react";
 import HowtoPlay from "../components/HowtoPlay";
 import PopupQRReuse from "../components/AlertqrReuse";
+import PopupError from "../components/AlertError";
 import PopupAward from "../components/AleartAward";
 import Hunt01 from "../imges/hyp/Biggy-Treasure-Hunt-01.jpg";
 import Hunt02 from "../imges/hyp/Biggy-Treasure-Hunt-02.jpg";
@@ -31,6 +32,7 @@ const MissionHYP = () => {
   const [status, setStatus] = useState("");
   const [processData, setProcessData] = useState([]);
   const [error, setError] = useState(null);
+  const [reuse, setReuse] = useState(null);
   const [award, setAward] = useState(null);
   const [rewardData, setRewardData] = useState(null);
   const [rewardFetched, setRewardFetched] = useState(false);
@@ -92,22 +94,24 @@ const MissionHYP = () => {
         );
         console.log("post: ", checkinResponse);
         setAward(null);
+        setReuse(null);
         setError(null);
 
         if (checkinResponse.data.status === "error") {
-          setError("ขออภัย! คุณเคยแสกนจุดนี้แล้ว");
+          setError("<b>ขออภัย!<b/><br/>คุณเคยแสกนจุดนี้แล้ว");
           setPopUpReload('');
 
         } else if (checkinResponse.data.status === "success") {
           if (checkinResponse.data.message === "get reward") {
             // setAward("ยินดีด้วย คุณรับรางวัลแล้ว");
             console.log("Reward received!");
-            if (!rewardFetched) {
+            await fetchReward();
+            /*if (!rewardFetched) {
               await fetchReward(userId);
               setRewardFetched(true);
-            }
+            }*/
           } else if (checkinResponse.data.message === "success") {
-            setError("ยินดีด้วย<br/>คุณสะสมได้เพิ่มอีก 1 จุดแล้ว");
+            setReuse("<b>ยินดีด้วย<b/><br/>คุณสะสมได้เพิ่มอีก 1 จุด");
             setPopUpReload('HYP');
             //window.location.reload();
           } else {
@@ -158,6 +162,8 @@ const MissionHYP = () => {
               //}, 5000);
             } else {
               // handle error
+              await setError("ขออภัย! คุณเคยรับรางวัลนี้แล้ว");
+              setPopUpReload('HYP');
             }
           })
           .catch((error) => {
@@ -272,7 +278,9 @@ const MissionHYP = () => {
             </Grid>
           </Box>
         </Grid>
-        {error && <PopupQRReuse message={error} page={popUpReload}/>}
+        {reuse && <PopupQRReuse message={reuse} page="HYP"/>}
+        {error && <PopupError message={error} page="HYP"/>}
+       {/*} {error && <PopupQRReuse message={error} page={popUpReload}/>} */}
         {award && <PopupAward message={award} />}       
         </Grid>
     </Layout>
