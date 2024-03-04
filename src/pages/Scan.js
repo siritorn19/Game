@@ -109,7 +109,10 @@ class ScanQR extends Component {
         >
           <QrReader
             delay={300}
-            facingMode={"environment"}
+            constraints={{
+              facingMode: 'environment'
+            }}
+            //facingMode={"environment"}
             onError={this.handleError}
             onScan={this.handleScan}
             style={{ width: "100%", height: "100%" }}
