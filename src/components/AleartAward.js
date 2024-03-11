@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled, css } from "@mui/system";
 import { Button } from "@mui/base/Button";
-import { Dialog, DialogContent, Grid, CardMedia, Box } from "@mui/material";
+import { Dialog, DialogContent, Grid, CardMedia, Box, Typography } from "@mui/material";
 import reward250 from "../imges/reward/icon-reward-250.png";
 import reward30 from "../imges/reward/icon-reward-30.png";
 import "./Alert.css";
@@ -54,7 +54,14 @@ const PopupAward = ({ message, error }) => {
               <Grid item sm={12} xs={12}>
                 <h3>ยินดีด้วย คุณสำเร็จภาระกิจและได้รับของรางวัล</h3>
                 <br></br>
-                <b className="popup-font-red">{message}</b>
+                <Typography
+                variant="h6"
+                className="popup-font-red"
+                component="div"
+                dangerouslySetInnerHTML={{
+                  __html: message,
+                }}
+              ></Typography>
                 <br></br>
                 <br></br>
                 {bigpointId != null ? (
@@ -62,9 +69,9 @@ const PopupAward = ({ message, error }) => {
                     <p className="popup-font-small">
                       ขณะนี้ระบบกำลังดำเนินการส่งคูปองไปให้คูณโดยจะใช้ระยะเวลาประมาณ
                       2-3 นาที หลังจากนั้น คุณสามารถตรวจสอบคูปองได้ที่เมนู My
-                      Coupon หรือ
+                      Coupon หรือ 
                       <a href={`${process.env.REACT_APP_BIGGAME_URL}/reward`}>
-                        คลิกที่นี่
+                         คลิกที่นี่
                       </a>
                     </p>
                   </>

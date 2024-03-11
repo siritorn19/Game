@@ -1,7 +1,14 @@
 import * as React from "react";
 import { styled, css } from "@mui/system";
 import { Button } from "@mui/base/Button";
-import { Dialog, DialogContent, Grid, CardMedia, Box } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  Grid,
+  CardMedia,
+  Box,
+  Typography,
+} from "@mui/material";
 import reward250 from "../imges/reward/icon-reward-250.png";
 import reward30 from "../imges/reward/icon-reward-30.png";
 import "./Alert.css";
@@ -18,19 +25,19 @@ const PopupAwardMini = ({ message, error }) => {
   const handleToBCM = (e) => {
     e.preventDefault();
     setOpen(false);
-    window.location.href=`https://lin.ee/DJCievM`;
+    window.location.href = `https://lin.ee/DJCievM`;
   };
 
   const handleToRegister = (e) => {
     e.preventDefault();
     setOpen(false);
-    window.location.href=`${process.env.REACT_APP_BIGGAME_LIFF_URL}?feature=register`;
+    window.location.href = `${process.env.REACT_APP_BIGGAME_LIFF_URL}?feature=register`;
   };
 
   const handleToMyReward = (e) => {
     e.preventDefault();
     setOpen(false);
-    window.location.href=`${process.env.REACT_APP_BIGGAME_URL}/reward`;
+    window.location.href = `${process.env.REACT_APP_BIGGAME_URL}/reward`;
   };
 
   return (
@@ -60,16 +67,18 @@ const PopupAwardMini = ({ message, error }) => {
               <Grid item sm={12} xs={12}>
                 <h3>ยินดีด้วย คุณสำเร็จภาระกิจและได้รับของรางวัล</h3>
                 <br></br>
-                <b className="popup-font-red">{message}</b>
-                <br></br>
+                <Typography
+                  sx={{ fontFamily: "Prompt" }}
+                  variant="h6"
+                  className="popup-font-red"
+                  component="div"
+                  dangerouslySetInnerHTML={{
+                    __html: message,
+                  }}
+                ></Typography>
                 <br></br>
                 {bigpointId != null ? (
                   <>
-                    <p className="popup-font">
-                      Big C Mini ขอเชิญคุณเป็นเพื่อน
-                      เพื่อจะได้ไม่พลาดส่วนลดและกิจกรรมของเรา
-                    </p>
-                    <br></br>
                     <p className="popup-font-small">
                       ขณะนี้ระบบกำลังดำเนินการส่งคูปองไปให้คูณโดยจะใช้ระยะเวลาประมาณ
                       2-3 นาที{" "}
@@ -96,7 +105,7 @@ const PopupAwardMini = ({ message, error }) => {
                       sx={{ color: "#fff" }}
                       onClick={(e) => handleToBCM(e)}
                     >
-                      เพิ่มเพื่อน Big C Mini
+                      เพิ่มเพื่อน <br /> Big C Mini
                     </Button>
                   </Box>
                 ) : (

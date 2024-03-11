@@ -51,12 +51,11 @@ class ScanQR extends Component {
       if (params.p === "hyp") {
         redirectPage = "missionhyp";
       } else if (params.p === "mini") {
-        redirectPage = "missionbcm";
+        redirectPage = "mainmission";
       }
       if (redirectPage) {
         window.location.href=`/${redirectPage}?qr=${params.qr}`;
       }
-      //console.log(window.location.href);
     }
   };
 
@@ -68,7 +67,7 @@ class ScanQR extends Component {
       const qr = searchParams.get("qr");
       return { p, qr };
     } catch (error) {
-      console.error("Error parsing QR data:", error);
+      // console.error("Error parsing QR data:", error);
       return null;
     }
   };
@@ -77,8 +76,6 @@ class ScanQR extends Component {
     e.preventDefault();
     window.history.go(-1);
     return false;
-    //navigate(-1);
-    //window.location.href=`/${lang}/lobby`;
   };
 
   render() {
@@ -107,9 +104,12 @@ class ScanQR extends Component {
           justifyContent="center"
           sx={{ minHeight: "10vh", backgroundColor: "#706e6e", m: 0, p: 0 }}
         >
-          <QrReader
+             <QrReader
             delay={300}
-            facingMode={"environment"}
+            constraints={{
+              facingMode: 'environment'
+            }}
+            //facingMode={"environment"}
             onError={this.handleError}
             onScan={this.handleScan}
             style={{ width: "100%", height: "100%" }}

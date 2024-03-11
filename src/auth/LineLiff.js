@@ -52,7 +52,7 @@ const LoginLineLiff = () => {
           */
         }
       } catch (error) {
-        console.error("Error initializing LIFF:", error.message);
+        // console.error("Error initializing LIFF:", error.message);
       }
     };
 

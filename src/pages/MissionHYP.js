@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Grid, Typography, Box, IconButton, Link } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import queryString from "query-string";
 import { useHistory } from "react-router-dom";
@@ -18,7 +19,8 @@ import Hunt07 from "../imges/hyp/Biggy-Treasure-Hunt-07.jpg";
 import BiggyHead from "../imges/BiggyHead.png";
 import HYPItem from "../imges/HYP-Item.jpg";
 import WalkAnimation from "../helpper/Animation_1.json";
-import BigCLoading from "../components/Loading";
+//import BigCLoading from "../components/Loading";
+import Waiting from "../components/Waiting";
 import Layout from "./Layout";
 
 import "./MissionHYP.css";
@@ -34,22 +36,16 @@ const MissionHYP = () => {
   const [award, setAward] = useState(null);
   const [rewardData, setRewardData] = useState(null);
   const [rewardFetched, setRewardFetched] = useState(false);
-  const [popUpReload, setPopUpReload] = useState('');
+  const [popUpReload, setPopUpReload] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  
   const history = useHistory();
 
   const params = queryString.parse(window.location.search);
   const qr = params.qr;
 
-  //const currentUrl = window.location.pathname;
-  //console.log(currentUrl);
-
   useEffect(() => {
     fetchData();
-    /*if (setMissionData || qr) {
-      fetchReward(userId);
-    }*/
   }, []);
 
   const fetchData = async () => {
@@ -64,12 +60,11 @@ const MissionHYP = () => {
         }
       );
       setStatus(missionResponse.data.status);
-      console.log("get :", missionResponse);
+      // console.log("get :", missionResponse);
 
       if (missionResponse.data.status === "success") {
         setMissionData(missionResponse.data.data);
       }
-      // const result = await response.json();
       setStatus(missionResponse.status);
       if (missionResponse.status === "success") {
         setMissionData(missionResponse.data);
@@ -90,85 +85,82 @@ const MissionHYP = () => {
             },
           }
         );
-        console.log("post: ", checkinResponse);
+        // console.log("post: ", checkinResponse);
         setAward(null);
         setError(null);
 
         if (checkinResponse.data.status === "error") {
-          setError("ขออภัย! คุณเคยแสกนจุดนี้แล้ว");
-          setPopUpReload('');
-
+          if (checkinResponse.data.message === "already check in") {
+            setError("ขออภัย!<br/>คุณเคยแสกนจุดนี้แล้ว");
+            setPopUpReload("");
+          } else if (checkinResponse.data.message === "Quota limit") {
+            setError("ขออภัย!<br/>คุณสแกนครบแล้ว 2 จุด<br />พรุ่งนี้รบกวนกลับมาเล่นอีกครั้งนะครับ");
+            setPopUpReload("");
+          }
         } else if (checkinResponse.data.status === "success") {
           if (checkinResponse.data.message === "get reward") {
             // setAward("ยินดีด้วย คุณรับรางวัลแล้ว");
-            console.log("Reward received!");
-            if (!rewardFetched) {
-              await fetchReward(userId);
+            // console.log("Reward received!");
+            await fetchReward();
+            /*if (!rewardFetched) {
+              await fetchReward();
               setRewardFetched(true);
-            }
+            }*/
           } else if (checkinResponse.data.message === "success") {
             setError("ยินดีด้วย<br/>คุณสะสมได้เพิ่มอีก 1 จุดแล้ว");
-            setPopUpReload('HYP');
-            //window.location.reload();
+            setPopUpReload("HYP");
           } else {
-            console.log("Check-in successful");
+            // console.log("Check-in successful");
           }
         }
       }
     } catch (error) {
-      console.log("Error fetching data:", error);
+      // console.log("Error fetching data:", error);
     }
   };
 
-  //reward
+  {/* Get reward */}
   const fetchReward = async () => {
     try {
-      //await fetchData().then(() => {
-        /*if (!missionData) {
-          console.log("bigpointId is null");
-          return;
-        }
-        const bigpointId =
-        missionData.bigpoint_id === null ? "null" : missionData.bigpoint_id;
-        */
-        const requestData = {
-          userId: userId,
-          rewardType: 1,
-          bigpointId: bigpointId,
-        };
-        console.log("Data sent to API:", requestData);
+       setIsLoading(true); // Set loading state
+      const requestData = {
+        userId: userId,
+        rewardType: 1,
+        bigpointId: bigpointId,
+      };
+      // console.log("Data sent to API:", requestData);
 
-        axios
-          .post(
-            `${process.env.REACT_APP_BACKEND_URL}/reward/getreward/`,
-            requestData,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          .then( async (response) => {
-            console.log("Response data:", response.data);
-            if (response.data.status === "success") {
-              await setRewardData(response.data);
-              //setTimeout(() => {
-                console.log("response message:", response.data.message); // Log error message
-                await setAward("ส่วนลดซื้อสินค้ามูลค่า 250 บาท จำนวน 2 คูปอง");
-              //}, 5000);
-            } else {
-              // handle error
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
-     // });
+      axios
+        .post(
+          `${process.env.REACT_APP_BACKEND_URL}/reward/getreward/`,
+          requestData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(async (response) => {
+           setIsLoading(false); // Set loading state
+          // console.log("Response data:", response.data);
+          if (response.data.status === "success") {
+            await setRewardData(response.data);
+            // console.log("response message:", response.data.message); // Log error message
+            await setAward("รับส่วนลด 2 คูปองมูลค่ารวม 500 บาท<br/>*เงื่อนไขตามที่บริษัทกำหนด");
+          } else {
+            // handle error
+          }
+        })
+        .catch((error) => {
+           setIsLoading(false); // Set loading state
+          // console.error("Error fetching data:", error);
+        });
+      // });
     } catch (error) {
-      console.error("Error fetching data:", error);
+      // console.error("Error fetching data:", error);
     }
   };
-/*
+  /*
   const imageUrls = {
     1: Hunt01,
     2: Hunt02,
@@ -219,19 +211,19 @@ const MissionHYP = () => {
             }}
           >
             {/* animate */}
-          <Box className="HYP-Hunt-animate-Box">
-            <Lottie
-              animationData={WalkAnimation}
-              loop={true}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                pointerEvents: "none",
-              }}
-            />
-          </Box>
+            <Box className="HYP-Hunt-animate-Box">
+              <Lottie
+                animationData={WalkAnimation}
+                loop={true}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  pointerEvents: "none",
+                }}
+              />
+            </Box>
             <Grid container>
               {[1, 2, 3, 4, 5, 6, 7].map((stageNumber) => {
                 const mission = missionData.find(
@@ -239,7 +231,12 @@ const MissionHYP = () => {
                     mission.check_point_name === `stage ${stageNumber}`
                 );
                 return (
-                  <Grid item xs={stageNumber === 1 ? 12 : 4} key={stageNumber} className="HYP-Hunt-Grid-Item">
+                  <Grid
+                    item
+                    xs={stageNumber === 1 ? 12 : 4}
+                    key={stageNumber}
+                    className="HYP-Hunt-Grid-Item"
+                  >
                     <a href="/scanqr">
                       <div className="HYP-Hunt-Item">
                         {mission ? (
@@ -261,7 +258,6 @@ const MissionHYP = () => {
                               color: "#ed1c24",
                             }}
                           >
-                            {/* Stage {stageNumber} */}
                           </Typography>
                         )}
                       </div>
@@ -272,9 +268,16 @@ const MissionHYP = () => {
             </Grid>
           </Box>
         </Grid>
-        {error && <PopupQRReuse message={error} page={popUpReload}/>}
-        {award && <PopupAward message={award} />}       
-        </Grid>
+        {error && <PopupQRReuse message={error} page={popUpReload} />}
+        {/* {isLoading ? (
+            <CircularProgress />
+          ) : (
+            award && <PopupAward message={award} />
+          )} */}
+          {isLoading ? (<Waiting />) : ''}
+  
+        {award && <PopupAward message={award} />}
+      </Grid>
     </Layout>
   );
 };
